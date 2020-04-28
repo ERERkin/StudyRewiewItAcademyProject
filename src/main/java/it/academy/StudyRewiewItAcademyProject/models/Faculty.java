@@ -10,4 +10,5 @@ import lombok.experimental.FieldDefaults;
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Faculty {
+    Long id;
 }

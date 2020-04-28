@@ -12,9 +12,9 @@ import java.util.Date;
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Department {
-    Integer id;
+    Long id;
     String name;
-    Long facultyId;
-    Long headOfDepartmentId;
+    Faculty facultyId;
+    Employee headOfDepartmentId;
     Date createDate;
 }
