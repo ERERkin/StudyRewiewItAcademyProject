@@ -1,4 +1,6 @@
 package it.academy.StudyRewiewItAcademyProject.service;
 
-public interface CommentService {
+import it.academy.StudyRewiewItAcademyProject.entity.Comment;
+
+public interface CommentService extends BaseService<Comment> {
 }

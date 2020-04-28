@@ -1,4 +1,6 @@
 package it.academy.StudyRewiewItAcademyProject.service;
 
-public interface MarkService {
+import it.academy.StudyRewiewItAcademyProject.entity.Mark;
+
+public interface MarkService extends BaseService<Mark> {
 }

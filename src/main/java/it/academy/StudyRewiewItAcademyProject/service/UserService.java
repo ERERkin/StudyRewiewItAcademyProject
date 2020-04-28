@@ -1,4 +1,6 @@
 package it.academy.StudyRewiewItAcademyProject.service;
 
-public interface UserService {
+import it.academy.StudyRewiewItAcademyProject.entity.User;
+
+public interface UserService extends BaseService<User> {
 }
