@@ -14,7 +14,7 @@ import java.util.Date;
 public class Department {
     Integer id;
     String name;
-    Integer facultyId;
-    Integer headOfDepartmentId;
+    Long facultyId;
+    Long headOfDepartmentId;
     Date createDate;
 }

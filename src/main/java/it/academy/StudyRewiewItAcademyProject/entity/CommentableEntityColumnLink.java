@@ -18,5 +18,11 @@ public class CommentableEntityColumnLink {
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long id;
 
+    @ManyToOne
+    @Column(name = "column_entity_id")
+    CommentableEntity columnEntity;
 
+    @ManyToOne
+    @Column(name = "entity_id")
+    CommentableEntity entity;
 }

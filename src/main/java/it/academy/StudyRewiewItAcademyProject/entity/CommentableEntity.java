@@ -26,5 +26,8 @@ public class CommentableEntity {
     String type;
 
     @OneToMany(mappedBy = "entity", fetch = FetchType.EAGER)
-    List<CommentableEntity> columns;
+    List<CommentableEntityColumn> columns;
+
+    @OneToMany(mappedBy = "columnEntity", fetch = FetchType.EAGER)
+    List<CommentableEntityColumnLink> linkColumns;
 }

@@ -2,8 +2,10 @@ package it.academy.StudyRewiewItAcademyProject.service.Impl;
 
 import it.academy.StudyRewiewItAcademyProject.entity.CommentableEntity;
 import it.academy.StudyRewiewItAcademyProject.entity.CommentableEntityColumn;
+import it.academy.StudyRewiewItAcademyProject.entity.CommentableEntityColumnLink;
 import it.academy.StudyRewiewItAcademyProject.models.Department;
 import it.academy.StudyRewiewItAcademyProject.repos.CommentableEntityRepo;
+import it.academy.StudyRewiewItAcademyProject.service.CommentableEntityColumnLinkService;
 import it.academy.StudyRewiewItAcademyProject.service.CommentableEntityColumnService;
 import it.academy.StudyRewiewItAcademyProject.service.CommentableEntityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,8 @@ public class CommentableEntityServiceImpl implements CommentableEntityService {
     private CommentableEntityRepo commentableEntityRepo;
     @Autowired
     private CommentableEntityColumnService commentableEntityColumnService;
+    @Autowired
+    private CommentableEntityColumnLinkService commentableEntityColumnLinkService;
     @Override
     public CommentableEntity getById(Long id) {
         Optional<CommentableEntity> commentableEntity = commentableEntityRepo.findById(id);
@@ -45,9 +49,32 @@ public class CommentableEntityServiceImpl implements CommentableEntityService {
 //        commentableEntityColumnService.save(CommentableEntityColumn.builder()
 //                .info("" + entity.)
 //        )
-//        commentableEntityRepo.save(CommentableEntity.builder()
-//                .
-//        )
+        CommentableEntity commentableEntity = commentableEntityRepo.save(CommentableEntity.builder()
+                .name(entity.getName())
+                .type("Department")
+                .build()
+        );
+        CommentableEntity faculty = commentableEntityRepo.findById(entity.getFacultyId()).get();
+        CommentableEntity head = commentableEntityRepo.findById(entity.getHeadOfDepartmentId()).get();
+        commentableEntityColumnService.save(
+                CommentableEntityColumn.builder()
+                        .infoType("Date")
+                        .info(entity.getCreateDate().toString())
+                        .entity(commentableEntity)
+                        .build()
+        );
+        commentableEntityColumnLinkService.save(
+                CommentableEntityColumnLink.builder()
+                        .columnEntity(faculty)
+                        .entity(commentableEntity)
+                        .build()
+        );
+        commentableEntityColumnLinkService.save(
+                CommentableEntityColumnLink.builder()
+                        .columnEntity(head)
+                        .entity(commentableEntity)
+                        .build()
+        );
         return entity;
     }
 }
