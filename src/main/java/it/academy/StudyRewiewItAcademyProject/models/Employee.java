@@ -11,4 +11,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Employee {
     Long id;
+    String name;
+    String phoneNumber;
+    String mail;
 }

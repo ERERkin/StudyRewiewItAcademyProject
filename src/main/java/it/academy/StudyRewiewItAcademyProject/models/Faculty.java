@@ -3,6 +3,8 @@ package it.academy.StudyRewiewItAcademyProject.models;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.List;
+
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -11,4 +13,6 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Faculty {
     Long id;
+    List<Employee> professorsList;
+    List<Subject> subjectList;
 }
