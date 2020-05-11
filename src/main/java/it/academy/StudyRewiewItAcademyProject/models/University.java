@@ -3,6 +3,7 @@ package it.academy.StudyRewiewItAcademyProject.models;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.Date;
 import java.util.List;
 
 @Builder
@@ -14,6 +15,7 @@ import java.util.List;
 public class University {
     Long id;
     String name;
-    List<Employee> employeeList;
-    List<Specialty> specialtyList;
+    String address;
+    Employee rector;
+    Date createDate;
 }

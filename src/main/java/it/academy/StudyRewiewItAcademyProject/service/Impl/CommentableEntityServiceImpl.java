@@ -6,6 +6,7 @@ import it.academy.StudyRewiewItAcademyProject.entity.CommentableEntityColumnLink
 import it.academy.StudyRewiewItAcademyProject.models.Department;
 import it.academy.StudyRewiewItAcademyProject.models.Employee;
 import it.academy.StudyRewiewItAcademyProject.models.Faculty;
+import it.academy.StudyRewiewItAcademyProject.models.University;
 import it.academy.StudyRewiewItAcademyProject.repos.CommentableEntityRepo;
 import it.academy.StudyRewiewItAcademyProject.service.CommentableEntityColumnLinkService;
 import it.academy.StudyRewiewItAcademyProject.service.CommentableEntityColumnService;
@@ -45,12 +46,36 @@ public class CommentableEntityServiceImpl implements CommentableEntityService {
     }
 
     @Override
+    public Employee saveEmployee(Employee entity) {
+        CommentableEntity commentableEntity = commentableEntityRepo.save(CommentableEntity.builder()
+                .name(entity.getName())
+                .type("Employee")
+                .build()
+        );
+        commentableEntityColumnService.save(
+                CommentableEntityColumn.builder()
+                        .infoType("Mail")
+                        .info(entity.getMail())
+                        .entity(commentableEntity)
+                        .build()
+        );
+        commentableEntityColumnService.save(
+                CommentableEntityColumn.builder()
+                        .infoType("Phone")
+                        .info(entity.getPhoneNumber())
+                        .entity(commentableEntity)
+                        .build()
+        );
+        return entity;
+    }
+
+    @Override
     public CommentableEntity save(CommentableEntity item) {
         return commentableEntityRepo.save(item);
     }
 
     @Override
-    public Department saveEntity(Department entity) {
+    public Department saveDepartment(Department entity) {
 //        commentableEntityColumnService.save(CommentableEntityColumn.builder()
 //                .info("" + entity.)
 //        )
@@ -86,7 +111,48 @@ public class CommentableEntityServiceImpl implements CommentableEntityService {
     }
 
     @Override
-    public Department getEntity(Long id) throws ParseException {
+    public University saveUniversity(University entity) {
+        CommentableEntity commentableEntity = commentableEntityRepo.save(CommentableEntity.builder()
+                .name(entity.getName())
+                .type("University")
+                .build()
+        );
+        //Long id;
+        //    String name;
+        //    String address;
+        //    Employee rector;
+        //    Date createDate;
+        commentableEntityColumnService.save(
+                CommentableEntityColumn.builder()
+                        .infoType("Address")
+                        .info(entity.getAddress())
+                        .entity(commentableEntity)
+                        .build()
+        );
+        commentableEntityColumnService.save(
+                CommentableEntityColumn.builder()
+                        .infoType("Date")
+                        .info(entity.getCreateDate().toString())
+                        .entity(commentableEntity)
+                        .build()
+        );
+        commentableEntityColumnLinkService.save(
+                CommentableEntityColumnLink.builder()
+                        .columnName("Employee")
+                        .columnEntity(getById(entity.getRector().getId()))
+                        .entity(getById(entity.getId()))
+                        .build()
+        );
+        return null;
+    }
+
+    @Override
+    public University getUniversity(Long id) {
+        return null;
+    }
+
+    @Override
+    public Department getDepartment(Long id) throws ParseException {
         CommentableEntity commentableEntity = commentableEntityRepo.findById(id).get();
         List<CommentableEntityColumn> commentableEntityColumns = commentableEntity.getColumns();
         List<CommentableEntityColumnLink> commentableEntityColumnLinks = commentableEntity.getLinkColumns();
@@ -108,5 +174,27 @@ public class CommentableEntityServiceImpl implements CommentableEntityService {
                 .createDate(date)
                 .build();
         return null;
+    }
+
+    @Override
+    public Employee getEmployee(Long id) {
+        CommentableEntity commentableEntity = commentableEntityRepo.findById(id).get();
+        List<CommentableEntityColumn> commentableEntityColumns = commentableEntity.getColumns();
+        //List<CommentableEntityColumnLink> commentableEntityColumnLinks = commentableEntity.getLinkColumns();
+        String mail = null;
+        String phone = null;
+        for(CommentableEntityColumn c : commentableEntityColumns){
+            if(c.getInfoType().equals("Mail"))
+                mail = c.getInfo();
+            else if(c.getInfoType().equals("Phone"))
+                phone = c.getInfo();
+        }
+        Employee employee = Employee.builder()
+                .id(id)
+                .mail(mail)
+                .name(commentableEntity.getName())
+                .phoneNumber(phone)
+                .build();
+        return employee;
     }
 }

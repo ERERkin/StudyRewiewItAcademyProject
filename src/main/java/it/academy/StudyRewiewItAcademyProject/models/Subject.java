@@ -13,5 +13,6 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Subject {
     Long id;
+    String name;
     List<Employee> professorList;
 }
