@@ -13,7 +13,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getById(Long id) {
-        return userRepo.getOne(id);
+        return userRepo.findById(id).get();
     }
 
     @Override

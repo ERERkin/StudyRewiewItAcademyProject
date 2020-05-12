@@ -94,6 +94,16 @@ public class CommentableEntityServiceImpl implements CommentableEntityService {
     }
 
     @Override
+    public List<Employee> getAllEmployee() {
+        List<Employee> employees = new ArrayList<>();
+        List<CommentableEntity> commentableEntities = commentableEntityRepo.findAllByType("Department");
+        for(CommentableEntity c : commentableEntities){
+            employees.add(getEmployee(c.getId()));
+        }
+        return employees;
+    }
+
+    @Override
     public Department saveDepartment(Department entity) {
 //        commentableEntityColumnService.save(CommentableEntityColumn.builder()
 //                .info("" + entity.)
@@ -136,22 +146,40 @@ public class CommentableEntityServiceImpl implements CommentableEntityService {
         List<CommentableEntityColumnLink> commentableEntityColumnLinks = commentableEntity.getLinkColumns();
         Date date = null;
         Faculty faculty = null;
+        Employee headOfDep = null;
         for(CommentableEntityColumn c : commentableEntityColumns){
             if(c.getInfoType().equals("Date"))
                 date = new SimpleDateFormat("dd/MM/yyyy").parse(c.getInfo());
         }
         for(CommentableEntityColumnLink c : commentableEntityColumnLinks){
-            /*if(c.getColumnName().equals("Faculty"))
-                faculty = c.getEntity();*/
+            if(c.getColumnName().equals("Faculty"))
+                faculty = getFaculty(c.getColumnEntity().getId());
+            else if(c.getColumnName().equals("Employee"))
+                headOfDep = getEmployee(c.getColumnEntity().getId());
         }
         Department department = Department.builder()
                 .id(commentableEntity.getId())
                 .name(commentableEntity.getName())
-                .headOfDepartmentId(new Employee())
-                .facultyId(new Faculty())
+                .headOfDepartmentId(headOfDep)
+                .facultyId(faculty)
                 .createDate(date)
                 .build();
         return department;
+    }
+
+    @Override
+    public List<Department> getAllDepartment() throws ParseException {
+        List<Department> departments = new ArrayList<>();
+        List<CommentableEntity> commentableEntities = commentableEntityRepo.findAllByType("Department");
+        for(CommentableEntity c : commentableEntities){
+            departments.add(getDepartment(c.getId()));
+        }
+        return departments;
+    }
+
+    @Override
+    public Void deleteDepartment(Long id) {
+        return null;
     }
 
     @Override

@@ -5,6 +5,7 @@ import it.academy.StudyRewiewItAcademyProject.models.*;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
+import java.util.List;
 
 @Service
 public interface CommentableEntityService extends BaseService<CommentableEntity>{
@@ -12,9 +13,15 @@ public interface CommentableEntityService extends BaseService<CommentableEntity>
 
     Department getDepartment(Long id) throws ParseException;
 
+    List<Department> getAllDepartment() throws ParseException;
+
+    Void deleteDepartment(Long id);
+
     Employee saveEmployee(Employee entity);
 
     Employee getEmployee(Long id);
+
+    List<Employee> getAllEmployee();
 
     University saveUniversity(University entity);
 

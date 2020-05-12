@@ -15,7 +15,7 @@ public class MarkServiceImpl implements MarkService {
 
     @Override
     public Mark getById(Long id) {
-        return markRepo.getOne(id);
+        return markRepo.findById(id).get();
     }
 
     @Override

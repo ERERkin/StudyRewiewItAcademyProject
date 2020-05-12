@@ -15,7 +15,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public Review getById(Long id) {
-        return reviewRepo.getOne(id);
+        return reviewRepo.findById(id).get();
     }
 
     @Override
