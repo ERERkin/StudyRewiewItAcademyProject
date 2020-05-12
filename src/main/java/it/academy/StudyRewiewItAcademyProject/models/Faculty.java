@@ -17,4 +17,5 @@ public class Faculty {
     String name;
     University university;
     Date createDate;
+    Employee facultyDean;
 }

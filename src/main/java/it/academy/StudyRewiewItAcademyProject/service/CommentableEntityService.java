@@ -1,9 +1,7 @@
 package it.academy.StudyRewiewItAcademyProject.service;
 
 import it.academy.StudyRewiewItAcademyProject.entity.CommentableEntity;
-import it.academy.StudyRewiewItAcademyProject.models.Department;
-import it.academy.StudyRewiewItAcademyProject.models.Employee;
-import it.academy.StudyRewiewItAcademyProject.models.University;
+import it.academy.StudyRewiewItAcademyProject.models.*;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -20,5 +18,13 @@ public interface CommentableEntityService extends BaseService<CommentableEntity>
 
     University saveUniversity(University entity);
 
-    University getUniversity(Long id);
+    University getUniversity(Long id) throws ParseException;
+
+    Faculty saveFaculty(Faculty entity);
+
+    Faculty getFaculty(Long id) throws ParseException;
+
+    Specialty saveSpeciality(Specialty specialty);
+
+    Specialty getSpeciality(Long id);
 }
