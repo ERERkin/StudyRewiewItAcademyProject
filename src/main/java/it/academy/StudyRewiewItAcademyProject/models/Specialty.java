@@ -13,6 +13,7 @@ import javax.persistence.Id;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Specialty {
     Long id;
+    String name;
     Department department;
     Integer contractSum;
 }

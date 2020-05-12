@@ -17,4 +17,7 @@ public class Mark {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long id;
+
+    @Column(name = "mark")
+    Integer mark;
 }

@@ -17,4 +17,7 @@ public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long id;
+
+    @Column(name = "review")
+    String review;
 }

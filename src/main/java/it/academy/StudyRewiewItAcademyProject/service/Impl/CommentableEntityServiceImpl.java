@@ -291,12 +291,54 @@ public class CommentableEntityServiceImpl implements CommentableEntityService {
     }
 
     @Override
-    public Specialty saveSpeciality(Specialty specialty) {
-        return null;
+    public Specialty saveSpeciality(Specialty entity) {
+        CommentableEntity commentableEntity = commentableEntityRepo.save(CommentableEntity.builder()
+                .name(entity.getName())
+                .type("Speciality")
+                .build()
+        );
+        //Long id;
+        //    String name;
+        //    Department department;
+        //    Integer contractSum;
+        commentableEntityColumnService.save(
+                CommentableEntityColumn.builder()
+                        .infoType("Sum")
+                        .info(entity.getContractSum().toString())
+                        .entity(commentableEntity)
+                        .build()
+        );
+        commentableEntityColumnLinkService.save(
+                CommentableEntityColumnLink.builder()
+                        .columnName("Faculty")
+                        .columnEntity(getById(entity.getDepartment().getId()))
+                        .entity(getById(entity.getId()))
+                        .build()
+        );
+        return entity;
     }
 
     @Override
-    public Specialty getSpeciality(Long id) {
-        return null;
+    public Specialty getSpeciality(Long id) throws ParseException {
+        CommentableEntity commentableEntity = commentableEntityRepo.findById(id).get();
+        List<CommentableEntityColumn> commentableEntityColumns = commentableEntity.getColumns();
+        List<CommentableEntityColumnLink> commentableEntityColumnLinks = commentableEntity.getLinkColumns();
+        Department department = null;
+        Integer sum = null;
+        for(CommentableEntityColumn c : commentableEntityColumns){
+            if(c.getInfoType().equals("Sum"))
+                sum = Integer.parseInt(c.getInfo());
+        }
+        for(CommentableEntityColumnLink c : commentableEntityColumnLinks){
+            if(c.getColumnName().equals("Department"))
+                department = getDepartment(c.getColumnEntity().getId());
+        }
+        Specialty specialty = Specialty.builder()
+                .id(id)
+                .name(commentableEntity.getName())
+                .contractSum(sum)
+                .department(department)
+                .build();
+        return specialty;
     }
 }

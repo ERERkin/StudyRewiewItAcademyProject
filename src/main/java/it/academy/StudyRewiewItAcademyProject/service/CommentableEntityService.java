@@ -24,7 +24,7 @@ public interface CommentableEntityService extends BaseService<CommentableEntity>
 
     Faculty getFaculty(Long id) throws ParseException;
 
-    Specialty saveSpeciality(Specialty specialty);
+    Specialty saveSpeciality(Specialty entity);
 
-    Specialty getSpeciality(Long id);
+    Specialty getSpeciality(Long id) throws ParseException;
 }
