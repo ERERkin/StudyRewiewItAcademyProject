@@ -15,8 +15,6 @@ public interface CommentableEntityService extends BaseService<CommentableEntity>
 
     List<Department> getAllDepartment() throws ParseException;
 
-    Void deleteDepartment(Long id);
-
     Employee saveEmployee(Employee entity);
 
     Employee getEmployee(Long id);
@@ -27,11 +25,17 @@ public interface CommentableEntityService extends BaseService<CommentableEntity>
 
     University getUniversity(Long id) throws ParseException;
 
+    List<University> getAllUniversity() throws ParseException;
+
     Faculty saveFaculty(Faculty entity);
 
     Faculty getFaculty(Long id) throws ParseException;
 
+    List<Faculty> getAllFaculty() throws ParseException;
+
     Specialty saveSpeciality(Specialty entity);
 
     Specialty getSpeciality(Long id) throws ParseException;
+
+    List<Specialty> getAllSpeciality() throws ParseException;
 }

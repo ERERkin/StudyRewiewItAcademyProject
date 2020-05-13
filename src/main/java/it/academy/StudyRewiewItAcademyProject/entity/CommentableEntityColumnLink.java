@@ -22,10 +22,10 @@ public class CommentableEntityColumnLink {
     String columnName;
 
     @ManyToOne
-    @Column(name = "column_entity_id")
+    @JoinColumn(name = "column_entity_id")
     CommentableEntity columnEntity;
 
     @ManyToOne
-    @Column(name = "entity_id")
+    @JoinColumn(name = "entity_id")
     CommentableEntity entity;
 }

@@ -12,5 +12,5 @@ import java.util.List;
 @Repository
 public interface CommentableEntityRepo extends JpaRepository<CommentableEntity, Long> {
     @Query("SELECT ce FROM CommentableEntity ce where ce.type = :type")
-    List<CommentableEntity> findAllByType(@Param("type")String type);
+    List<CommentableEntity> findAllByType(String type);
 }

@@ -178,11 +178,6 @@ public class CommentableEntityServiceImpl implements CommentableEntityService {
     }
 
     @Override
-    public Void deleteDepartment(Long id) {
-        return null;
-    }
-
-    @Override
     public University saveUniversity(University entity) {
         CommentableEntity commentableEntity = commentableEntityRepo.save(CommentableEntity.builder()
                 .name(entity.getName())
@@ -254,6 +249,16 @@ public class CommentableEntityServiceImpl implements CommentableEntityService {
     }
 
     @Override
+    public List<University> getAllUniversity() throws ParseException {
+        List<University> universities = new ArrayList<>();
+        List<CommentableEntity> commentableEntities = commentableEntityRepo.findAllByType("University");
+        for(CommentableEntity c : commentableEntities){
+            universities.add(getUniversity(c.getId()));
+        }
+        return universities;
+    }
+
+    @Override
     public Faculty saveFaculty(Faculty entity) {
         CommentableEntity commentableEntity = commentableEntityRepo.save(CommentableEntity.builder()
                 .name(entity.getName())
@@ -319,6 +324,16 @@ public class CommentableEntityServiceImpl implements CommentableEntityService {
     }
 
     @Override
+    public List<Faculty> getAllFaculty() throws ParseException {
+        List<Faculty> faculties = new ArrayList<>();
+        List<CommentableEntity> commentableEntities = commentableEntityRepo.findAllByType("Faculty");
+        for(CommentableEntity c : commentableEntities){
+            faculties.add(getFaculty(c.getId()));
+        }
+        return faculties;
+    }
+
+    @Override
     public Specialty saveSpeciality(Specialty entity) {
         CommentableEntity commentableEntity = commentableEntityRepo.save(CommentableEntity.builder()
                 .name(entity.getName())
@@ -368,5 +383,15 @@ public class CommentableEntityServiceImpl implements CommentableEntityService {
                 .department(department)
                 .build();
         return specialty;
+    }
+
+    @Override
+    public List<Specialty> getAllSpeciality() throws ParseException {
+        List<Specialty> specialties = new ArrayList<>();
+        List<CommentableEntity> commentableEntities = commentableEntityRepo.findAllByType("Specialty");
+        for(CommentableEntity c : commentableEntities){
+            specialties.add(getSpeciality(c.getId()));
+        }
+        return specialties;
     }
 }

@@ -25,6 +25,6 @@ public class CommentableEntityColumn {
     String info;
 
     @ManyToOne
-    @Column(name = "entity_id")
+    @JoinColumn(name = "entity_id")
     CommentableEntity entity;
 }

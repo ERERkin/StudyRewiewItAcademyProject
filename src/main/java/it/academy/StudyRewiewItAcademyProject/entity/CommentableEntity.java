@@ -2,6 +2,8 @@ package it.academy.StudyRewiewItAcademyProject.entity;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.List;
@@ -26,8 +28,10 @@ public class CommentableEntity {
     String type;
 
     @OneToMany(mappedBy = "entity", fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
     List<CommentableEntityColumn> columns;
 
     @OneToMany(mappedBy = "columnEntity", fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
     List<CommentableEntityColumnLink> linkColumns;
 }
