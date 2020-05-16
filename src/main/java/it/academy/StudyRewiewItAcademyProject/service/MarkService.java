@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-
+@Service
 public interface MarkService extends BaseService<Mark> {
     @Override
     Mark getById(Long id);

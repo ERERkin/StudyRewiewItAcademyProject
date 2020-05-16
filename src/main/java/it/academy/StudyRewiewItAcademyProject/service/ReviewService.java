@@ -4,8 +4,7 @@ import it.academy.StudyRewiewItAcademyProject.entity.Review;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
-
+@Service
 public interface ReviewService extends BaseService<Review> {
     @Override
     Review getById(Long id);

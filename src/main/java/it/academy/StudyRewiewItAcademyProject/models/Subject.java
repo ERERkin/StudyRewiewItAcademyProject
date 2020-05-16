@@ -15,4 +15,8 @@ public class Subject {
     Long id;
     String name;
     List<Employee> professorList;
+
+
 }
+
+

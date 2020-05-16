@@ -4,10 +4,11 @@ import it.academy.StudyRewiewItAcademyProject.entity.User;
 import it.academy.StudyRewiewItAcademyProject.repos.UserRepo;
 import it.academy.StudyRewiewItAcademyProject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
-@Service
+
+@Component
 public class UserServiceImpl implements UserService {
     @Autowired
     UserRepo userRepo;
@@ -30,5 +31,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public void delete(Long id) {
         userRepo.deleteById(id);
+    }
+
+    @Override
+
+    public List<User> findByLogin(String login) {
+        return userRepo.findByLogin(login);
+    }
+
+    public void deleteByLogin(String login) {
+        userRepo.deleteByLogin(login);
+        System.err.println("Successfully deleted user: " + login);
     }
 }

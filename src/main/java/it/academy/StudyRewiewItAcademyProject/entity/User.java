@@ -1,9 +1,11 @@
 package it.academy.StudyRewiewItAcademyProject.entity;
 
+import it.academy.StudyRewiewItAcademyProject.enums.RoleEnum;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Builder
 @Entity
@@ -13,15 +15,20 @@ import javax.persistence.*;
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Table(name = "st_user")
+@ToString
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long id;
 
-    @Column
+    @Column (unique = true, nullable = false)
     String login;
-    @Column
+    @Column (unique = false, nullable = false)
     String name;
-    @Column
+    @Column (unique = false, nullable = false)
     String password;
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    Roles role;
+
 }
