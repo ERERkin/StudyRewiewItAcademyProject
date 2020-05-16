@@ -20,18 +20,45 @@ public class Bootstrap implements CommandLineRunner {
     private PasswordEncoder passwordEncoder;
     @Override
     public void run(String... args) throws Exception {
-        Roles roleStudent = new Roles(RoleEnum.STUDENT.name());
-        rolesRepo.save(roleStudent);
-        Roles roleAdmin = new Roles("ADMIN");
-        rolesRepo.save(roleAdmin);
-        Roles roleUser = new Roles(RoleEnum.USER.name());
-        rolesRepo.save(roleUser);
-
+//        Roles roleStudent = new Roles(RoleEnum.STUDENT.name());
+//        rolesRepo.save(roleStudent);
+//        Roles roleAdmin = new Roles("ADMIN");
+//        rolesRepo.save(roleAdmin);
+//        Roles roleUser = new Roles(RoleEnum.USER.name());
+//        rolesRepo.save(roleUser);
+//
+//        User admin = User.builder()
+//                .login("admin")
+//                .name("ADMIN")
+//                .password(passwordEncoder.encode("123"))
+//                .role(roleAdmin).build();
+//        userRepo.save(admin);
         User admin = User.builder()
                 .login("admin")
-                .name("ADMIN")
                 .password(passwordEncoder.encode("123"))
-                .role(roleAdmin).build();
+                .isActive(1)
+                .build();
+
+        User user = User.builder()
+                .login("user")
+                .password(passwordEncoder.encode("456"))
+                .isActive(1)
+                .build();
+
+        Roles adminRole = Roles.builder()
+                .roleName("ROLE_ADMIN")
+                .user(admin)
+                .build();
+
+        Roles userRole = Roles.builder()
+                .roleName("ROLE_USER")
+                .user(user)
+                .build();
+
         userRepo.save(admin);
+        userRepo.save(user);
+
+        rolesRepo.save(adminRole);
+        rolesRepo.save(userRole);
     }
 }

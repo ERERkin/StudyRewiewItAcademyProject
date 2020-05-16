@@ -5,6 +5,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Builder
@@ -23,12 +24,14 @@ public class User {
 
     @Column (unique = true, nullable = false)
     String login;
-    @Column (unique = false, nullable = false)
-    String name;
+
+//    @Column (unique = false, nullable = false)
+//    String name;
+
     @Column (unique = false, nullable = false)
     String password;
-    @ManyToOne
-    @JoinColumn(name = "role_id")
-    Roles role;
 
+    @NotNull
+    @Column(name = "is_active")
+    int isActive;
 }

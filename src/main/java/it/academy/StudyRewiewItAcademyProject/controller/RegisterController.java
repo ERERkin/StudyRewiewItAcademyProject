@@ -37,8 +37,8 @@ public class RegisterController {
         user.setPassword(encodedPassword);
         user.setLogin(registerUser.getLogin());
         // role_Name is saved as a number not ENUM
-        user.setName(registerUser.getName());
-        user.setRole(rolesRepo.findByName("STUDENT"));
+        //user.setName(registerUser.getName());
+        //user.setRole(rolesRepo.findByName("STUDENT"));
         userRepo.save(user);
         return "User " + registerUser.getLogin() + " is successfully registered!";
     }
