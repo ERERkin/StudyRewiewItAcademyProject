@@ -13,4 +13,7 @@ import java.util.List;
 public interface CommentableEntityRepo extends JpaRepository<CommentableEntity, Long> {
     @Query("SELECT ce FROM CommentableEntity ce where ce.type = :type")
     List<CommentableEntity> findAllByType(String type);
+
+    @Query("SELECT count(ce) FROM CommentableEntity ce where ce.id = :id")
+    Long findCount(Long id);
 }

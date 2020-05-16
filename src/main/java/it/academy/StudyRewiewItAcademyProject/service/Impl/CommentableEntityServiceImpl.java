@@ -49,25 +49,56 @@ public class CommentableEntityServiceImpl implements CommentableEntityService {
 
     @Override
     public Employee saveEmployee(Employee entity) {
-        CommentableEntity commentableEntity = commentableEntityRepo.save(CommentableEntity.builder()
+        CommentableEntity commentableEntity;
+        List<CommentableEntityColumn> commentableEntityColumns = new ArrayList<>();
+        if(commentableEntityRepo.findCount(entity.getId()) > 0) {
+            commentableEntity = commentableEntityRepo.findById(entity.getId()).get();
+            commentableEntityColumns = commentableEntity.getColumns();
+        }
+        commentableEntity = commentableEntityRepo.save(CommentableEntity.builder()
+                .id(entity.getId())
                 .name(entity.getName())
                 .type("Employee")
                 .build()
         );
-        commentableEntityColumnService.save(
-                CommentableEntityColumn.builder()
-                        .infoType("Mail")
-                        .info(entity.getMail())
-                        .entity(commentableEntity)
-                        .build()
-        );
-        commentableEntityColumnService.save(
-                CommentableEntityColumn.builder()
-                        .infoType("Phone")
-                        .info(entity.getPhoneNumber())
-                        .entity(commentableEntity)
-                        .build()
-        );
+        if(commentableEntityRepo.findCount(entity.getId()) > 0){
+            for(CommentableEntityColumn cec : commentableEntityColumns){
+                if(cec.getInfoType().equals("Mail")){
+                    commentableEntityColumnService.save(
+                            CommentableEntityColumn.builder()
+                                    .id(cec.getId())
+                                    .infoType("Mail")
+                                    .info(entity.getMail())
+                                    .entity(commentableEntity)
+                                    .build()
+                    );
+                }else if(cec.getInfoType().equals("Phone")){
+                    commentableEntityColumnService.save(
+                            CommentableEntityColumn.builder()
+                                    .id(cec.getId())
+                                    .infoType("Phone")
+                                    .info(entity.getPhoneNumber())
+                                    .entity(commentableEntity)
+                                    .build()
+                    );
+                }
+            }
+        }else {
+            commentableEntityColumnService.save(
+                    CommentableEntityColumn.builder()
+                            .infoType("Mail")
+                            .info(entity.getMail())
+                            .entity(commentableEntity)
+                            .build()
+            );
+            commentableEntityColumnService.save(
+                    CommentableEntityColumn.builder()
+                            .infoType("Phone")
+                            .info(entity.getPhoneNumber())
+                            .entity(commentableEntity)
+                            .build()
+            );
+        }
         return entity;
     }
 
@@ -96,7 +127,7 @@ public class CommentableEntityServiceImpl implements CommentableEntityService {
     @Override
     public List<Employee> getAllEmployee() {
         List<Employee> employees = new ArrayList<>();
-        List<CommentableEntity> commentableEntities = commentableEntityRepo.findAllByType("Department");
+        List<CommentableEntity> commentableEntities = commentableEntityRepo.findAllByType("Employee");
         for(CommentableEntity c : commentableEntities){
             employees.add(getEmployee(c.getId()));
         }
@@ -109,6 +140,7 @@ public class CommentableEntityServiceImpl implements CommentableEntityService {
 //                .info("" + entity.)
 //        )
         CommentableEntity commentableEntity = commentableEntityRepo.save(CommentableEntity.builder()
+                .id(entity.getId())
                 .name(entity.getName())
                 .type("Department")
                 .build()
@@ -179,37 +211,81 @@ public class CommentableEntityServiceImpl implements CommentableEntityService {
 
     @Override
     public University saveUniversity(University entity) {
-        CommentableEntity commentableEntity = commentableEntityRepo.save(CommentableEntity.builder()
+        CommentableEntity commentableEntity;
+        List<CommentableEntityColumn> commentableEntityColumns = new ArrayList<>();
+        List<CommentableEntityColumnLink> commentableEntityColumnLinks = new ArrayList<>();
+        if(commentableEntityRepo.findCount(entity.getId()) > 0) {
+            commentableEntity = commentableEntityRepo.findById(entity.getId()).get();
+            commentableEntityColumns = commentableEntity.getColumns();
+            commentableEntityColumnLinks = commentableEntity.getLinkColumns();
+        }
+        commentableEntity = commentableEntityRepo.save(CommentableEntity.builder()
+                .id(entity.getId())
                 .name(entity.getName())
                 .type("University")
                 .build()
         );
-        //Long id;
-        //    String name;
-        //    String address;
-        //    Employee rector;
-        //    Date createDate;
-        commentableEntityColumnService.save(
-                CommentableEntityColumn.builder()
-                        .infoType("Address")
-                        .info(entity.getAddress())
-                        .entity(commentableEntity)
-                        .build()
-        );
-        commentableEntityColumnService.save(
-                CommentableEntityColumn.builder()
-                        .infoType("Date")
-                        .info(entity.getCreateDate().toString())
-                        .entity(commentableEntity)
-                        .build()
-        );
-        commentableEntityColumnLinkService.save(
-                CommentableEntityColumnLink.builder()
-                        .columnName("Employee")
-                        .columnEntity(getById(entity.getRector().getId()))
-                        .entity(getById(entity.getId()))
-                        .build()
-        );
+        if(commentableEntityRepo.findCount(entity.getId()) > 0) {
+            for(CommentableEntityColumn c : commentableEntityColumns){
+                if(c.getInfoType().equals("Address")){
+                    commentableEntityColumnService.save(
+                            CommentableEntityColumn.builder()
+                                    .id(c.getId())
+                                    .infoType("Address")
+                                    .info(entity.getAddress())
+                                    .entity(commentableEntity)
+                                    .build()
+                    );
+                }else if(c.getInfoType().equals("")){
+                    commentableEntityColumnService.save(
+                            CommentableEntityColumn.builder()
+                                    .id(c.getId())
+                                    .infoType("Date")
+                                    .info(entity.getCreateDate())
+                                    .entity(commentableEntity)
+                                    .build()
+                    );
+                }
+            }
+            for(CommentableEntityColumnLink c : commentableEntityColumnLinks){
+                if(c.getColumnName().equals("Employee")){
+                    commentableEntityColumnLinkService.save(
+                            CommentableEntityColumnLink.builder()
+                                    .columnName("Employee")
+                                    .columnEntity(getById(entity.getRector().getId()))
+                                    .entity(getById(entity.getId()))
+                                    .build()
+                    );
+                }
+            }
+        }else{
+            //Long id;
+            //    String name;
+            //    String address;
+            //    Employee rector;
+            //    Date createDate;
+            commentableEntityColumnService.save(
+                    CommentableEntityColumn.builder()
+                            .infoType("Address")
+                            .info(entity.getAddress())
+                            .entity(commentableEntity)
+                            .build()
+            );
+            commentableEntityColumnService.save(
+                    CommentableEntityColumn.builder()
+                            .infoType("Date")
+                            .info(entity.getCreateDate())
+                            .entity(commentableEntity)
+                            .build()
+            );
+            commentableEntityColumnLinkService.save(
+                    CommentableEntityColumnLink.builder()
+                            .columnName("Employee")
+                            .columnEntity(getById(entity.getRector().getId()))
+                            .entity(commentableEntity)
+                            .build()
+            );
+        }
         return entity;
     }
 
@@ -218,6 +294,7 @@ public class CommentableEntityServiceImpl implements CommentableEntityService {
         CommentableEntity commentableEntity = commentableEntityRepo.findById(id).get();
         List<CommentableEntityColumn> commentableEntityColumns = commentableEntity.getColumns();
         List<CommentableEntityColumnLink> commentableEntityColumnLinks = commentableEntity.getLinkColumns();
+        System.out.println(commentableEntityColumnLinks);
         //Long id;
         //    String name;
         //    String address;
@@ -225,16 +302,17 @@ public class CommentableEntityServiceImpl implements CommentableEntityService {
         //    Date createDate;
         String address = null;
         Employee rector = null;
-        Date date = null;
+        String date = null;
         for(CommentableEntityColumn c : commentableEntityColumns){
             if(c.getInfoType().equals("Date"))
-                date = new SimpleDateFormat("dd/MM/yyyy").parse(c.getInfo());
+                date = (c.getInfo());
             else if(c.getInfoType().equals("Address"))
                 address = c.getInfo();
         }
         for(CommentableEntityColumnLink c : commentableEntityColumnLinks){
             /*if(c.getColumnName().equals("Faculty"))
                 faculty = c.getEntity();*/
+            System.err.println(c.getColumnName());
             if(c.getColumnName().equals("Employee"))
                 rector = getEmployee(c.getColumnEntity().getId());
         }

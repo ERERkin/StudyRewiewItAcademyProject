@@ -17,5 +17,5 @@ public class University {
     String name;
     String address;
     Employee rector;
-    Date createDate;
+    String createDate;
 }
