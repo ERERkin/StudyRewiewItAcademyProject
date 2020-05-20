@@ -135,39 +135,91 @@ public class CommentableEntityServiceImpl implements CommentableEntityService {
     }
 
     @Override
-    public Department saveDepartment(Department entity) {
+    public Department saveDepartment(Department entity) throws ParseException {
 //        commentableEntityColumnService.save(CommentableEntityColumn.builder()
 //                .info("" + entity.)
 //        )
-        CommentableEntity commentableEntity = commentableEntityRepo.save(CommentableEntity.builder()
+
+        CommentableEntity commentableEntity;
+        List<CommentableEntityColumn> commentableEntityColumns = new ArrayList<>();
+        List<CommentableEntityColumnLink> commentableEntityColumnLinks = new ArrayList<>();
+        if(commentableEntityRepo.findCount(entity.getId()) > 0) {
+            commentableEntity = commentableEntityRepo.findById(entity.getId()).get();
+            commentableEntityColumns = commentableEntity.getColumns();
+            commentableEntityColumnLinks = commentableEntity.getLinkColumns();
+        }
+        commentableEntity = commentableEntityRepo.save(CommentableEntity.builder()
                 .id(entity.getId())
                 .name(entity.getName())
                 .type("Department")
                 .build()
         );
-        CommentableEntity faculty = commentableEntityRepo.findById(entity.getFacultyId().getId()).get();
-        CommentableEntity head = commentableEntityRepo.findById(entity.getHeadOfDepartmentId().getId()).get();
-        commentableEntityColumnService.save(
-                CommentableEntityColumn.builder()
-                        .infoType("Date")
-                        .info(entity.getCreateDate().toString())
-                        .entity(commentableEntity)
-                        .build()
-        );
-        commentableEntityColumnLinkService.save(
-                CommentableEntityColumnLink.builder()
-                        .columnEntity(faculty)
-                        .entity(commentableEntity)
-                        .columnName("Faculty")
-                        .build()
-        );
-        commentableEntityColumnLinkService.save(
-                CommentableEntityColumnLink.builder()
-                        .columnEntity(head)
-                        .entity(commentableEntity)
-                        .columnName("HeadOfDep")
-                        .build()
-        );
+        //Long id;
+        //    String name;
+        //    Faculty facultyId;
+        //    Employee headOfDepartmentId;
+        //    Date createDate;
+        if(commentableEntityRepo.findCount(entity.getId()) > 0){
+            for(CommentableEntityColumn c : commentableEntityColumns){
+                if(c.getInfoType().equals("Date")) {
+                    //date = new SimpleDateFormat("dd/MM/yyyy").parse(c.getInfo());
+                    commentableEntityColumnService.save(
+                            CommentableEntityColumn.builder()
+                                    .id(c.getId())
+                                    .infoType("Date")
+                                    .info(entity.getCreateDate())
+                                    .entity(commentableEntity)
+                                    .build()
+                    );
+                }
+            }
+            for(CommentableEntityColumnLink c : commentableEntityColumnLinks) {
+                if (c.getColumnName().equals("Faculty")) {
+                    //faculty = getFaculty(c.getColumnEntity().getId());
+                    commentableEntityColumnLinkService.save(
+                            CommentableEntityColumnLink.builder()
+                                    .id(c.getId())
+                                    .columnName("Faculty")
+                                    .columnEntity(getById(entity.getFacultyId().getId()))
+                                    .linkEntity(getById(entity.getId()))
+                                    .build()
+                    );
+                } else if (c.getColumnName().equals("Employee")) {
+                    commentableEntityColumnLinkService.save(
+                            CommentableEntityColumnLink.builder()
+                                    .id(c.getId())
+                                    .columnName("Employee")
+                                    .columnEntity(getById(entity.getHeadOfDepartmentId().getId()))
+                                    .linkEntity(getById(entity.getId()))
+                                    .build()
+                    );
+                }
+            }
+        }else {
+            CommentableEntity faculty = commentableEntityRepo.findById(entity.getFacultyId().getId()).get();
+            CommentableEntity head = commentableEntityRepo.findById(entity.getHeadOfDepartmentId().getId()).get();
+            commentableEntityColumnService.save(
+                    CommentableEntityColumn.builder()
+                            .infoType("Date")
+                            .info(entity.getCreateDate())
+                            .entity(commentableEntity)
+                            .build()
+            );
+            commentableEntityColumnLinkService.save(
+                    CommentableEntityColumnLink.builder()
+                            .columnEntity(faculty)
+                            .linkEntity(commentableEntity)
+                            .columnName("Faculty")
+                            .build()
+            );
+            commentableEntityColumnLinkService.save(
+                    CommentableEntityColumnLink.builder()
+                            .columnEntity(head)
+                            .linkEntity(commentableEntity)
+                            .columnName("HeadOfDep")
+                            .build()
+            );
+        }
         return entity;
     }
 
@@ -176,12 +228,12 @@ public class CommentableEntityServiceImpl implements CommentableEntityService {
         CommentableEntity commentableEntity = commentableEntityRepo.findById(id).get();
         List<CommentableEntityColumn> commentableEntityColumns = commentableEntity.getColumns();
         List<CommentableEntityColumnLink> commentableEntityColumnLinks = commentableEntity.getLinkColumns();
-        Date date = null;
+        String date = null;
         Faculty faculty = null;
         Employee headOfDep = null;
         for(CommentableEntityColumn c : commentableEntityColumns){
             if(c.getInfoType().equals("Date"))
-                date = new SimpleDateFormat("dd/MM/yyyy").parse(c.getInfo());
+                date = c.getInfo();
         }
         for(CommentableEntityColumnLink c : commentableEntityColumnLinks){
             if(c.getColumnName().equals("Faculty"))
@@ -251,9 +303,10 @@ public class CommentableEntityServiceImpl implements CommentableEntityService {
                 if(c.getColumnName().equals("Employee")){
                     commentableEntityColumnLinkService.save(
                             CommentableEntityColumnLink.builder()
+                                    .id(c.getId())
                                     .columnName("Employee")
                                     .columnEntity(getById(entity.getRector().getId()))
-                                    .entity(getById(entity.getId()))
+                                    .linkEntity(getById(entity.getId()))
                                     .build()
                     );
                 }
@@ -282,7 +335,7 @@ public class CommentableEntityServiceImpl implements CommentableEntityService {
                     CommentableEntityColumnLink.builder()
                             .columnName("Employee")
                             .columnEntity(getById(entity.getRector().getId()))
-                            .entity(commentableEntity)
+                            .linkEntity(commentableEntity)
                             .build()
             );
         }
@@ -294,7 +347,6 @@ public class CommentableEntityServiceImpl implements CommentableEntityService {
         CommentableEntity commentableEntity = commentableEntityRepo.findById(id).get();
         List<CommentableEntityColumn> commentableEntityColumns = commentableEntity.getColumns();
         List<CommentableEntityColumnLink> commentableEntityColumnLinks = commentableEntity.getLinkColumns();
-        System.out.println(commentableEntityColumnLinks);
         //Long id;
         //    String name;
         //    String address;
@@ -338,7 +390,15 @@ public class CommentableEntityServiceImpl implements CommentableEntityService {
 
     @Override
     public Faculty saveFaculty(Faculty entity) {
-        CommentableEntity commentableEntity = commentableEntityRepo.save(CommentableEntity.builder()
+        CommentableEntity commentableEntity;
+        List<CommentableEntityColumn> commentableEntityColumns = new ArrayList<>();
+        List<CommentableEntityColumnLink> commentableEntityColumnLinks = new ArrayList<>();
+        if(commentableEntityRepo.findCount(entity.getId()) > 0) {
+            commentableEntity = commentableEntityRepo.findById(entity.getId()).get();
+            commentableEntityColumns = commentableEntity.getColumns();
+            commentableEntityColumnLinks = commentableEntity.getLinkColumns();
+        }
+        commentableEntity = commentableEntityRepo.save(CommentableEntity.builder()
                 .name(entity.getName())
                 .type("Faculty")
                 .build()
@@ -348,27 +408,64 @@ public class CommentableEntityServiceImpl implements CommentableEntityService {
         //    University university;
         //    Date createDate;
         //    Employee facultyDean;
-        commentableEntityColumnService.save(
-                CommentableEntityColumn.builder()
-                        .infoType("Date")
-                        .info(entity.getCreateDate().toString())
-                        .entity(commentableEntity)
-                        .build()
-        );
-        commentableEntityColumnLinkService.save(
-                CommentableEntityColumnLink.builder()
-                        .columnName("Employee")
-                        .columnEntity(getById(entity.getFacultyDean().getId()))
-                        .entity(getById(entity.getId()))
-                        .build()
-        );
-        commentableEntityColumnLinkService.save(
-                CommentableEntityColumnLink.builder()
-                        .columnName("University")
-                        .columnEntity(getById(entity.getUniversity().getId()))
-                        .entity(getById(entity.getId()))
-                        .build()
-        );
+        if(commentableEntityRepo.findCount(entity.getId()) > 0){
+            for(CommentableEntityColumn c : commentableEntityColumns){
+                if(c.getInfoType().equals("Date")){
+                    commentableEntityColumnService.save(
+                            CommentableEntityColumn.builder()
+                                    .id(c.getId())
+                                    .infoType("Date")
+                                    .info(entity.getCreateDate())
+                                    .entity(commentableEntity)
+                                    .build()
+                    );
+                }
+            }
+            for(CommentableEntityColumnLink c : commentableEntityColumnLinks){
+                if(c.getColumnName().equals("Employee")){
+                    commentableEntityColumnLinkService.save(
+                            CommentableEntityColumnLink.builder()
+                                    .id(c.getId())
+                                    .columnName("Employee")
+                                    .columnEntity(getById(entity.getFacultyDean().getId()))
+                                    .linkEntity(getById(entity.getId()))
+                                    .build()
+                    );
+                }
+                else if(c.getColumnName().equals("University")){
+                    commentableEntityColumnLinkService.save(
+                            CommentableEntityColumnLink.builder()
+                                    .id(c.getId())
+                                    .columnName("University")
+                                    .columnEntity(getById(entity.getUniversity().getId()))
+                                    .linkEntity(getById(entity.getId()))
+                                    .build()
+                    );
+                }
+            }
+        }else {
+            commentableEntityColumnService.save(
+                    CommentableEntityColumn.builder()
+                            .infoType("Date")
+                            .info(entity.getCreateDate())
+                            .entity(commentableEntity)
+                            .build()
+            );
+            commentableEntityColumnLinkService.save(
+                    CommentableEntityColumnLink.builder()
+                            .columnName("Employee")
+                            .columnEntity(getById(entity.getFacultyDean().getId()))
+                            .linkEntity(getById(entity.getId()))
+                            .build()
+            );
+            commentableEntityColumnLinkService.save(
+                    CommentableEntityColumnLink.builder()
+                            .columnName("University")
+                            .columnEntity(getById(entity.getUniversity().getId()))
+                            .linkEntity(getById(entity.getId()))
+                            .build()
+            );
+        }
         return null;
     }
 
@@ -378,11 +475,12 @@ public class CommentableEntityServiceImpl implements CommentableEntityService {
         List<CommentableEntityColumn> commentableEntityColumns = commentableEntity.getColumns();
         List<CommentableEntityColumnLink> commentableEntityColumnLinks = commentableEntity.getLinkColumns();
         Employee facultyDean = null;
-        Date date = null;
+        String date = null;
         University university = null;
         for(CommentableEntityColumn c : commentableEntityColumns){
             if(c.getInfoType().equals("Date"))
-                date = new SimpleDateFormat("dd/MM/yyyy").parse(c.getInfo());
+                //date = new SimpleDateFormat("dd/MM/yyyy").parse(c.getInfo());
+                date = c.getInfo();
         }
         for(CommentableEntityColumnLink c : commentableEntityColumnLinks){
             if(c.getColumnName().equals("Employee"))
@@ -413,7 +511,15 @@ public class CommentableEntityServiceImpl implements CommentableEntityService {
 
     @Override
     public Specialty saveSpeciality(Specialty entity) {
-        CommentableEntity commentableEntity = commentableEntityRepo.save(CommentableEntity.builder()
+        CommentableEntity commentableEntity;
+        List<CommentableEntityColumn> commentableEntityColumns = new ArrayList<>();
+        List<CommentableEntityColumnLink> commentableEntityColumnLinks = new ArrayList<>();
+        if(commentableEntityRepo.findCount(entity.getId()) > 0) {
+            commentableEntity = commentableEntityRepo.findById(entity.getId()).get();
+            commentableEntityColumns = commentableEntity.getColumns();
+            commentableEntityColumnLinks = commentableEntity.getLinkColumns();
+        }
+        commentableEntity = commentableEntityRepo.save(CommentableEntity.builder()
                 .name(entity.getName())
                 .type("Speciality")
                 .build()
@@ -422,20 +528,49 @@ public class CommentableEntityServiceImpl implements CommentableEntityService {
         //    String name;
         //    Department department;
         //    Integer contractSum;
-        commentableEntityColumnService.save(
-                CommentableEntityColumn.builder()
-                        .infoType("Sum")
-                        .info(entity.getContractSum().toString())
-                        .entity(commentableEntity)
-                        .build()
-        );
-        commentableEntityColumnLinkService.save(
-                CommentableEntityColumnLink.builder()
-                        .columnName("Faculty")
-                        .columnEntity(getById(entity.getDepartment().getId()))
-                        .entity(getById(entity.getId()))
-                        .build()
-        );
+        if(commentableEntityRepo.findCount(entity.getId()) > 0){
+            for(CommentableEntityColumn c : commentableEntityColumns){
+                if(c.getInfoType().equals("Sum")) {
+                    //sum = Integer.parseInt(c.getInfo());
+                    commentableEntityColumnService.save(
+                            CommentableEntityColumn.builder()
+                                    .id(c.getId())
+                                    .infoType("Sum")
+                                    .info(entity.getContractSum().toString())
+                                    .entity(commentableEntity)
+                                    .build()
+                    );
+                }
+            }
+            for(CommentableEntityColumnLink c : commentableEntityColumnLinks){
+                if(c.getColumnName().equals("Department")) {
+                    //department = getDepartment(c.getColumnEntity().getId());
+                    commentableEntityColumnLinkService.save(
+                            CommentableEntityColumnLink.builder()
+                                    .id(c.getId())
+                                    .columnName("Department")
+                                    .columnEntity(getById(entity.getDepartment().getId()))
+                                    .linkEntity(getById(entity.getId()))
+                                    .build()
+                    );
+                }
+            }
+        }else {
+            commentableEntityColumnService.save(
+                    CommentableEntityColumn.builder()
+                            .infoType("Sum")
+                            .info(entity.getContractSum().toString())
+                            .entity(commentableEntity)
+                            .build()
+            );
+            commentableEntityColumnLinkService.save(
+                    CommentableEntityColumnLink.builder()
+                            .columnName("Faculty")
+                            .columnEntity(getById(entity.getDepartment().getId()))
+                            .linkEntity(getById(entity.getId()))
+                            .build()
+            );
+        }
         return entity;
     }
 

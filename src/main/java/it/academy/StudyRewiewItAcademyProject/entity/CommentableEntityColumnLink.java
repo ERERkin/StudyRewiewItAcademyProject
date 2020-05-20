@@ -27,5 +27,5 @@ public class CommentableEntityColumnLink {
 
     @ManyToOne
     @JoinColumn(name = "entity_id")
-    CommentableEntity entity;
+    CommentableEntity linkEntity;
 }

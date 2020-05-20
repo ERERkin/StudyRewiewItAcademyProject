@@ -16,6 +16,6 @@ public class Faculty {
     Long id;
     String name;
     University university;
-    Date createDate;
+    String createDate;
     Employee facultyDean;
 }

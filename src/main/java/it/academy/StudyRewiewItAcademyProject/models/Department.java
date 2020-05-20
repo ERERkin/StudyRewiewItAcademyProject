@@ -16,5 +16,5 @@ public class Department {
     String name;
     Faculty facultyId;
     Employee headOfDepartmentId;
-    Date createDate;
+    String createDate;
 }

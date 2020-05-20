@@ -31,7 +31,7 @@ public class CommentableEntity {
     @Fetch(value = FetchMode.SUBSELECT)
     List<CommentableEntityColumn> columns;
 
-    @OneToMany(mappedBy = "columnEntity", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "linkEntity", fetch = FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
     List<CommentableEntityColumnLink> linkColumns;
 }
