@@ -1,5 +1,6 @@
 package it.academy.StudyRewiewItAcademyProject.models;
 
+import it.academy.StudyRewiewItAcademyProject.entity.Review;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -9,9 +10,7 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Employee implements Model{
-    Long id;
-    String name;
-    String phoneNumber;
-    String mail;
+public class ReviewModel {
+    Review review;
+    Model model;
 }

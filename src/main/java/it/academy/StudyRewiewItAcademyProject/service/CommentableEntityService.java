@@ -38,4 +38,6 @@ public interface CommentableEntityService extends BaseService<CommentableEntity>
     Specialty getSpeciality(Long id) throws ParseException;
 
     List<Specialty> getAllSpeciality() throws ParseException;
+
+    String getType(Long id);
 }

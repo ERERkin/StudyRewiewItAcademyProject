@@ -181,7 +181,7 @@ public class CommentableEntityServiceImpl implements CommentableEntityService {
                                     .id(c.getId())
                                     .columnName("Faculty")
                                     .columnEntity(getById(entity.getFacultyId().getId()))
-                                    .linkEntity(getById(entity.getId()))
+                                    .linkEntity(commentableEntity)
                                     .build()
                     );
                 } else if (c.getColumnName().equals("Employee")) {
@@ -190,7 +190,7 @@ public class CommentableEntityServiceImpl implements CommentableEntityService {
                                     .id(c.getId())
                                     .columnName("Employee")
                                     .columnEntity(getById(entity.getHeadOfDepartmentId().getId()))
-                                    .linkEntity(getById(entity.getId()))
+                                    .linkEntity(commentableEntity)
                                     .build()
                     );
                 }
@@ -306,7 +306,7 @@ public class CommentableEntityServiceImpl implements CommentableEntityService {
                                     .id(c.getId())
                                     .columnName("Employee")
                                     .columnEntity(getById(entity.getRector().getId()))
-                                    .linkEntity(getById(entity.getId()))
+                                    .linkEntity(commentableEntity)
                                     .build()
                     );
                 }
@@ -428,7 +428,7 @@ public class CommentableEntityServiceImpl implements CommentableEntityService {
                                     .id(c.getId())
                                     .columnName("Employee")
                                     .columnEntity(getById(entity.getFacultyDean().getId()))
-                                    .linkEntity(getById(entity.getId()))
+                                    .linkEntity(commentableEntity)
                                     .build()
                     );
                 }
@@ -438,7 +438,7 @@ public class CommentableEntityServiceImpl implements CommentableEntityService {
                                     .id(c.getId())
                                     .columnName("University")
                                     .columnEntity(getById(entity.getUniversity().getId()))
-                                    .linkEntity(getById(entity.getId()))
+                                    .linkEntity(commentableEntity)
                                     .build()
                     );
                 }
@@ -455,18 +455,18 @@ public class CommentableEntityServiceImpl implements CommentableEntityService {
                     CommentableEntityColumnLink.builder()
                             .columnName("Employee")
                             .columnEntity(getById(entity.getFacultyDean().getId()))
-                            .linkEntity(getById(entity.getId()))
+                            .linkEntity(commentableEntity)
                             .build()
             );
             commentableEntityColumnLinkService.save(
                     CommentableEntityColumnLink.builder()
                             .columnName("University")
                             .columnEntity(getById(entity.getUniversity().getId()))
-                            .linkEntity(getById(entity.getId()))
+                            .linkEntity(commentableEntity)
                             .build()
             );
         }
-        return null;
+        return entity;
     }
 
     @Override
@@ -550,7 +550,7 @@ public class CommentableEntityServiceImpl implements CommentableEntityService {
                                     .id(c.getId())
                                     .columnName("Department")
                                     .columnEntity(getById(entity.getDepartment().getId()))
-                                    .linkEntity(getById(entity.getId()))
+                                    .linkEntity(commentableEntity)
                                     .build()
                     );
                 }
@@ -567,7 +567,7 @@ public class CommentableEntityServiceImpl implements CommentableEntityService {
                     CommentableEntityColumnLink.builder()
                             .columnName("Faculty")
                             .columnEntity(getById(entity.getDepartment().getId()))
-                            .linkEntity(getById(entity.getId()))
+                            .linkEntity(commentableEntity)
                             .build()
             );
         }
@@ -606,5 +606,11 @@ public class CommentableEntityServiceImpl implements CommentableEntityService {
             specialties.add(getSpeciality(c.getId()));
         }
         return specialties;
+    }
+
+    @Override
+    public String getType(Long id) {
+        CommentableEntity commentableEntity = commentableEntityRepo.findById(id).get();
+        return commentableEntity.getType();
     }
 }

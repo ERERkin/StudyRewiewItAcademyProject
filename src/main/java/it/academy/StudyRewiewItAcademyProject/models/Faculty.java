@@ -12,7 +12,7 @@ import java.util.List;
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Faculty {
+public class Faculty implements Model{
     Long id;
     String name;
     University university;

@@ -20,4 +20,7 @@ public class Comment {
 
     @Column(name = "comment")
     String comment;
+
+    @Column(name = "model_id")
+    Long modelId;
 }

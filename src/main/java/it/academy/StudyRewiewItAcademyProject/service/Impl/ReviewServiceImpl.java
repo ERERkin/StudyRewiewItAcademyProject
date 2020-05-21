@@ -1,17 +1,23 @@
 package it.academy.StudyRewiewItAcademyProject.service.Impl;
 
 import it.academy.StudyRewiewItAcademyProject.entity.Review;
+import it.academy.StudyRewiewItAcademyProject.models.ReviewModel;
 import it.academy.StudyRewiewItAcademyProject.repos.ReviewRepo;
+import it.academy.StudyRewiewItAcademyProject.service.CommentableEntityService;
 import it.academy.StudyRewiewItAcademyProject.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class ReviewServiceImpl implements ReviewService {
     @Autowired
     ReviewRepo reviewRepo;
+    @Autowired
+    CommentableEntityService commentableEntityService;
 
     @Override
     public Review getById(Long id) {
@@ -31,5 +37,40 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public void delete(Long id) {
         reviewRepo.deleteById(id);
+    }
+
+    @Override
+    public List<ReviewModel> getAllByEntity(Long id) throws ParseException {
+        List<ReviewModel> reviewModels = new ArrayList<>();
+        List<Review> reviews = reviewRepo.getAllByCommentableEntity(id);
+        for(Review r : reviews){
+            String s = commentableEntityService.getType(id);
+            if(s.equals("Department"))
+            reviewModels.add(ReviewModel.builder()
+                    .review(r)
+                    .model(commentableEntityService.getDepartment(r.getId()))
+                    .build());
+            else if(s.equals("Employee"))
+                reviewModels.add(ReviewModel.builder()
+                        .review(r)
+                        .model(commentableEntityService.getEmployee(r.getId()))
+                        .build());
+            else if(s.equals("University"))
+                reviewModels.add(ReviewModel.builder()
+                        .review(r)
+                        .model(commentableEntityService.getUniversity(r.getId()))
+                        .build());
+            else if(s.equals("Faculty"))
+                reviewModels.add(ReviewModel.builder()
+                        .review(r)
+                        .model(commentableEntityService.getFaculty(r.getId()))
+                        .build());
+            else if(s.equals("Speciality"))
+                reviewModels.add(ReviewModel.builder()
+                        .review(r)
+                        .model(commentableEntityService.getSpeciality(r.getId()))
+                        .build());
+        }
+        return reviewModels;
     }
 }

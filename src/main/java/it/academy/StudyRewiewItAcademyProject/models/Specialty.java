@@ -11,7 +11,7 @@ import javax.persistence.Id;
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Specialty {
+public class Specialty implements Model{
     Long id;
     String name;
     Department department;

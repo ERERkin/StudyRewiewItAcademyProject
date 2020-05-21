@@ -11,7 +11,7 @@ import java.util.Date;
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Department {
+public class Department implements Model{
     Long id;
     String name;
     Faculty facultyId;

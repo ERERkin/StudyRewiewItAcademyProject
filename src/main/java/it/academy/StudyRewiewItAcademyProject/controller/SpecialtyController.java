@@ -1,8 +1,8 @@
 package it.academy.StudyRewiewItAcademyProject.controller;
 
 import it.academy.StudyRewiewItAcademyProject.models.Specialty;
-import it.academy.StudyRewiewItAcademyProject.models.University;
 import it.academy.StudyRewiewItAcademyProject.service.CommentableEntityService;
+import it.academy.StudyRewiewItAcademyProject.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +14,8 @@ import java.util.List;
 public class SpecialtyController {
     @Autowired
     CommentableEntityService commentableEntityService;
+    @Autowired
+    ReviewService reviewService;
 
     @GetMapping
     List<Specialty> getAll() throws ParseException {
