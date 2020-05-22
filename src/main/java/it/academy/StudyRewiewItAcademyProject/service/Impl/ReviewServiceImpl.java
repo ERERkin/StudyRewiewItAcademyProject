@@ -1,7 +1,9 @@
 package it.academy.StudyRewiewItAcademyProject.service.Impl;
 
 import it.academy.StudyRewiewItAcademyProject.entity.Review;
+import it.academy.StudyRewiewItAcademyProject.models.Model;
 import it.academy.StudyRewiewItAcademyProject.models.ReviewModel;
+import it.academy.StudyRewiewItAcademyProject.models.SuperReviewModel;
 import it.academy.StudyRewiewItAcademyProject.repos.ReviewRepo;
 import it.academy.StudyRewiewItAcademyProject.service.CommentableEntityService;
 import it.academy.StudyRewiewItAcademyProject.service.ReviewService;
@@ -72,5 +74,30 @@ public class ReviewServiceImpl implements ReviewService {
                         .build());
         }
         return reviewModels;
+    }
+
+    @Override
+    public SuperReviewModel getSuperMReviewModel(Long id, String type) throws ParseException {
+        Model model = null;
+        if(type.equals("Department")){
+            model = commentableEntityService.getDepartment(id);
+        }
+        else if(type.equals("Employee")){
+            model = commentableEntityService.getEmployee(id);
+        }
+        else if(type.equals("University")){
+            model = commentableEntityService.getUniversity(id);
+        }
+        else if(type.equals("Faculty")){
+            model = commentableEntityService.getFaculty(id);
+        }
+        else if(type.equals("Speciality")){
+            model = commentableEntityService.getSpeciality(id);
+        }
+        List<ReviewModel> reviewModels = getAllByEntity(id);
+        return SuperReviewModel.builder()
+                .model(model)
+                .commentModels(reviewModels)
+                .build();
     }
 }

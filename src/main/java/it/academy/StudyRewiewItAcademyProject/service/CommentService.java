@@ -2,8 +2,7 @@ package it.academy.StudyRewiewItAcademyProject.service;
 
 import it.academy.StudyRewiewItAcademyProject.entity.Comment;
 import it.academy.StudyRewiewItAcademyProject.models.CommentModel;
-import it.academy.StudyRewiewItAcademyProject.models.SuperModel;
-import org.springframework.stereotype.Service;
+import it.academy.StudyRewiewItAcademyProject.models.SuperCommentModel;
 
 import java.text.ParseException;
 import java.util.List;
@@ -25,5 +24,5 @@ public interface CommentService extends BaseService<Comment> {
 
     List<CommentModel> getAllByEntity(Long id) throws ParseException;
 
-    SuperModel getSuperModel(Long id, String type) throws ParseException;
+    SuperCommentModel getSuperCommentModel(Long id, String type) throws ParseException;
 }

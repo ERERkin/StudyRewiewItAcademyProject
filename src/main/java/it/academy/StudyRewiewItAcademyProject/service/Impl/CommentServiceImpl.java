@@ -1,11 +1,9 @@
 package it.academy.StudyRewiewItAcademyProject.service.Impl;
 
 import it.academy.StudyRewiewItAcademyProject.entity.Comment;
-import it.academy.StudyRewiewItAcademyProject.entity.Review;
 import it.academy.StudyRewiewItAcademyProject.models.CommentModel;
 import it.academy.StudyRewiewItAcademyProject.models.Model;
-import it.academy.StudyRewiewItAcademyProject.models.ReviewModel;
-import it.academy.StudyRewiewItAcademyProject.models.SuperModel;
+import it.academy.StudyRewiewItAcademyProject.models.SuperCommentModel;
 import it.academy.StudyRewiewItAcademyProject.repos.CommentRepo;
 import it.academy.StudyRewiewItAcademyProject.service.CommentService;
 import it.academy.StudyRewiewItAcademyProject.service.CommentableEntityService;
@@ -84,7 +82,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public SuperModel getSuperModel(Long id, String type) throws ParseException {
+    public SuperCommentModel getSuperCommentModel(Long id, String type) throws ParseException {
         Model model = null;
         if(type.equals("Department")){
             model = commentableEntityService.getDepartment(id);
@@ -102,7 +100,7 @@ public class CommentServiceImpl implements CommentService {
             model = commentableEntityService.getSpeciality(id);
         }
         List<CommentModel> commentModels = getAllByEntity(id);
-        return SuperModel.builder()
+        return SuperCommentModel.builder()
                 .model(model)
                 .commentModels(commentModels)
                 .build();

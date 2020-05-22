@@ -2,6 +2,8 @@ package it.academy.StudyRewiewItAcademyProject.service;
 
 import it.academy.StudyRewiewItAcademyProject.entity.Review;
 import it.academy.StudyRewiewItAcademyProject.models.ReviewModel;
+import it.academy.StudyRewiewItAcademyProject.models.SuperCommentModel;
+import it.academy.StudyRewiewItAcademyProject.models.SuperReviewModel;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -22,4 +24,6 @@ public interface ReviewService extends BaseService<Review> {
     void delete(Long id);
 
     List<ReviewModel> getAllByEntity(Long id) throws ParseException;
+
+    SuperReviewModel getSuperMReviewModel(Long id, String type) throws ParseException;
 }

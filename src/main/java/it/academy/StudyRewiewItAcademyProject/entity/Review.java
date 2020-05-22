@@ -28,4 +28,7 @@ public class Review {
 
     @Column(name = "model_id")
     Long modelId;
+
+    @Column(name = "create_time")
+    String time;
 }
