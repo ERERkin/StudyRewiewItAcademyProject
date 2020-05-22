@@ -23,4 +23,7 @@ public class Comment {
 
     @Column(name = "model_id")
     Long modelId;
+
+    @Column(name = "create_time")
+    String time;
 }

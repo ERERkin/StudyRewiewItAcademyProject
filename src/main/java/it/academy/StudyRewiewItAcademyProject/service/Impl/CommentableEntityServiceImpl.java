@@ -135,11 +135,10 @@ public class CommentableEntityServiceImpl implements CommentableEntityService {
     }
 
     @Override
-    public Department saveDepartment(Department entity) throws ParseException {
+    public Department saveDepartment(Department entity) {
 //        commentableEntityColumnService.save(CommentableEntityColumn.builder()
 //                .info("" + entity.)
 //        )
-
         CommentableEntity commentableEntity;
         List<CommentableEntityColumn> commentableEntityColumns = new ArrayList<>();
         List<CommentableEntityColumnLink> commentableEntityColumnLinks = new ArrayList<>();

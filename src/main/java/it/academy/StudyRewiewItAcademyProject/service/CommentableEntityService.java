@@ -9,7 +9,7 @@ import java.util.List;
 
 @Service
 public interface CommentableEntityService extends BaseService<CommentableEntity>{
-    Department saveDepartment(Department entity) throws ParseException;
+    Department saveDepartment(Department entity) ;
 
     Department getDepartment(Long id) throws ParseException;
 
