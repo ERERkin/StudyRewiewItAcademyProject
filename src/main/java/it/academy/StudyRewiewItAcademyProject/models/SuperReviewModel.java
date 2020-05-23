@@ -13,5 +13,5 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class SuperReviewModel {
     Model model;
-    List<ReviewModel> commentModels;
+    List<ReviewModel> reviewModels;
 }

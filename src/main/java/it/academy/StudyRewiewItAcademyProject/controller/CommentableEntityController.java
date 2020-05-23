@@ -93,8 +93,8 @@ public class CommentableEntityController {
 //    }
 
     @GetMapping("/university/{idUn}/faculty")
-    List<Faculty> getAll(@PathVariable String idUn) throws ParseException {
-        return commentableEntityService.getAllFaculty();
+    List<Faculty> getAll(@PathVariable Long idUn) throws ParseException {
+        return commentableEntityService.getAllFacultyByUniversity(idUn);
     }
 
     @GetMapping("/university/{idUn}/faculty/{idFaculty}")
@@ -174,7 +174,7 @@ public class CommentableEntityController {
     @GetMapping("/university/{idUn}/faculty/{idFaculty}/dep")
     List<Department> getAll(@PathVariable Long idUn,
                             @PathVariable Long idFaculty) throws ParseException {
-        return commentableEntityService.getAllDepartment();
+        return commentableEntityService.getAllDepartmentByFaculty(idFaculty);
     }
 
     @GetMapping("/university/{idUn}/faculty/{idFaculty}/dep/{idDep}")
@@ -190,7 +190,7 @@ public class CommentableEntityController {
         return superCommentModel;
     }
 
-    @PostMapping("/university/{idUn}/faculty/{idFaculty}/dep/{idDep}/review")
+    @PostMapping("/university/{idUn}/faculty/{idFaculty}/dep/{idDep}")
     CommentModel save(@RequestBody CommentModel commentModel,
                       @PathVariable Long idUn,
                       @PathVariable Long idFaculty,
@@ -259,7 +259,7 @@ public class CommentableEntityController {
     List<Specialty> getAll(@PathVariable Long idUn,
                            @PathVariable Long idFaculty,
                            @PathVariable Long idDep) throws ParseException {
-        return commentableEntityService.getAllSpeciality();
+        return commentableEntityService.getAllSpecialityByDepartment(idDep);
     }
 
     @GetMapping("/university/{idUn}/faculty/{idFaculty}/dep/{idDep}/spec/{idSpec}")
@@ -269,7 +269,7 @@ public class CommentableEntityController {
                               @PathVariable Long idSpec) throws ParseException {
         SuperCommentModel superCommentModel = null;
         try {
-            superCommentModel = commentService.getSuperCommentModel(idSpec, "Department");
+            superCommentModel = commentService.getSuperCommentModel(idSpec, "Specialty");
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -303,7 +303,7 @@ public class CommentableEntityController {
                                    @PathVariable Long idSpec)  {
         SuperReviewModel superReviewModel = null;
         try {
-            superReviewModel = reviewService.getSuperMReviewModel(idDep, "Department");
+            superReviewModel = reviewService.getSuperMReviewModel(idSpec, "Specialty");
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -344,4 +344,81 @@ public class CommentableEntityController {
 //        }
 //        return commentableEntityService.saveSpeciality(specialty);
 //    }
+
+    @GetMapping("/university/{idUn}/faculty/{idFaculty}/dep/{idDep}/emp")
+    List<Employee> getAllEmp(@PathVariable Long idUn,
+                           @PathVariable Long idFaculty,
+                           @PathVariable Long idDep) throws ParseException {
+        return commentableEntityService.getAllEmployeeByDepartment(idDep);
+    }
+
+    @GetMapping("/university/{idUn}/faculty/{idFaculty}/dep/{idDep}/emp/{idEmp}")
+    SuperCommentModel getEmpById(@PathVariable Long idUn,
+                              @PathVariable Long idFaculty,
+                              @PathVariable Long idDep,
+                              @PathVariable Long idEmp) throws ParseException {
+        SuperCommentModel superCommentModel = null;
+        try {
+            superCommentModel = commentService.getSuperCommentModel(idEmp, "Employee");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return superCommentModel;
+    }
+
+    @PostMapping("/university/{idUn}/faculty/{idFaculty}/dep/{idDep}/emp/{idEmp}")
+    CommentModel saveEmp(@RequestBody CommentModel commentModel,
+                      @PathVariable Long idUn,
+                      @PathVariable Long idFaculty,
+                      @PathVariable Long idDep,
+                      @PathVariable Long idEmp)  {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        Date date = new Date();
+        Comment comment = commentService.save(Comment.builder()
+                .modelId(idEmp)
+                .comment(commentModel.getComment())
+                .time(dateFormat.format(date))
+                .build());
+        return CommentModel.builder()
+                .id(comment.getId())
+                .comment(comment.getComment())
+                .time(comment.getTime())
+                .build();
+    }
+
+    @GetMapping("/university/{idUn}/faculty/{idFaculty}/dep/{idDep}/emp/{idEmp}/review")
+    SuperReviewModel getEmpReviewById(@PathVariable Long idUn,
+                                   @PathVariable Long idFaculty,
+                                   @PathVariable Long idDep,
+                                   @PathVariable Long idEmp)  {
+        SuperReviewModel superReviewModel = null;
+        try {
+            superReviewModel = reviewService.getSuperMReviewModel(idEmp, "Employee");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return superReviewModel;
+    }
+
+    @PostMapping("/university/{idUn}/faculty/{idFaculty}/dep/{idDep}/emp/{idEmp}/review")
+    ReviewModel saveEmpReview(@RequestBody ReviewModel reviewModel,
+                           @PathVariable Long idUn,
+                           @PathVariable Long idFaculty,
+                           @PathVariable Long idDep,
+                           @PathVariable Long idEmp){
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        Date date = new Date();
+        Review review = reviewService.save(Review.builder()
+                .mark(reviewModel.getMark())
+                .review(reviewModel.getReview())
+                .modelId(idEmp)
+                .time(dateFormat.format(date))
+                .build());
+        return ReviewModel.builder()
+                .id(review.getId())
+                .review(review.getReview())
+                .mark(review.getMark())
+                .time(review.getTime())
+                .build();
+    }
 }

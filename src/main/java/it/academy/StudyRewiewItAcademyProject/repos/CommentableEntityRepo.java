@@ -14,6 +14,9 @@ public interface CommentableEntityRepo extends JpaRepository<CommentableEntity, 
     @Query("SELECT ce FROM CommentableEntity ce where ce.type = :type")
     List<CommentableEntity> findAllByType(String type);
 
+    @Query("select cecl.linkEntity from CommentableEntityColumnLink cecl where cecl.columnEntity.id = :idEntity")
+    List<CommentableEntity> findAllByColumnEntity(Long idEntity);
+
     @Query("SELECT count(ce) FROM CommentableEntity ce where ce.id = :id")
     Long findCount(Long id);
 }

@@ -29,6 +29,6 @@ public class SpecialtyController {
 
     @PostMapping
     Specialty save(@RequestBody Specialty specialty){
-        return commentableEntityService.saveSpeciality(specialty);
+        return commentableEntityService.saveSpecialty(specialty);
     }
 }

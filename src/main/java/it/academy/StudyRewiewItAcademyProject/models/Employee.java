@@ -14,4 +14,5 @@ public class Employee implements Model{
     String name;
     String phoneNumber;
     String mail;
+    Department department;
 }

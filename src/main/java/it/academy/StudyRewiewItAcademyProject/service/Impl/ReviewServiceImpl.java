@@ -49,28 +49,38 @@ public class ReviewServiceImpl implements ReviewService {
             String s = commentableEntityService.getType(id);
             if(s.equals("Department"))
             reviewModels.add(ReviewModel.builder()
-                    .review(r)
-                    .model(commentableEntityService.getDepartment(r.getId()))
+                    .id(r.getId())
+                    .review(r.getReview())
+                    .mark(r.getMark())
+                    //.model(commentableEntityService.getDepartment(r.getId()))
                     .build());
             else if(s.equals("Employee"))
                 reviewModels.add(ReviewModel.builder()
-                        .review(r)
-                        .model(commentableEntityService.getEmployee(r.getId()))
+                        .id(r.getId())
+                        .review(r.getReview())
+                        .mark(r.getMark())
+                        //.model(commentableEntityService.getEmployee(r.getId()))
                         .build());
             else if(s.equals("University"))
                 reviewModels.add(ReviewModel.builder()
-                        .review(r)
-                        .model(commentableEntityService.getUniversity(r.getId()))
+                        .id(r.getId())
+                        .review(r.getReview())
+                        .mark(r.getMark())
+                        //.model(commentableEntityService.getUniversity(r.getId()))
                         .build());
             else if(s.equals("Faculty"))
                 reviewModels.add(ReviewModel.builder()
-                        .review(r)
-                        .model(commentableEntityService.getFaculty(r.getId()))
+                        .id(r.getId())
+                        .review(r.getReview())
+                        .mark(r.getMark())
+                        //.model(commentableEntityService.getFaculty(r.getId()))
                         .build());
             else if(s.equals("Speciality"))
                 reviewModels.add(ReviewModel.builder()
-                        .review(r)
-                        .model(commentableEntityService.getSpeciality(r.getId()))
+                        .id(r.getId())
+                        .review(r.getReview())
+                        .mark(r.getMark())
+                        //.model(commentableEntityService.getSpeciality(r.getId()))
                         .build());
         }
         return reviewModels;
@@ -96,8 +106,9 @@ public class ReviewServiceImpl implements ReviewService {
         }
         List<ReviewModel> reviewModels = getAllByEntity(id);
         return SuperReviewModel.builder()
+
                 .model(model)
-                .commentModels(reviewModels)
+                .reviewModels(reviewModels)
                 .build();
     }
 }
