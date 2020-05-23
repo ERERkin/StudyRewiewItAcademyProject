@@ -289,6 +289,7 @@ public class CommentableEntityServiceImpl implements CommentableEntityService {
                             .build()
             );
         }
+        entity.setId(commentableEntity.getId());
         return entity;
     }
 
@@ -432,6 +433,7 @@ public class CommentableEntityServiceImpl implements CommentableEntityService {
                             .build()
             );
         }
+        entity.setId(commentableEntity.getId());
         return entity;
     }
 
@@ -573,6 +575,7 @@ public class CommentableEntityServiceImpl implements CommentableEntityService {
                             .build()
             );
         }
+        entity.setId(commentableEntity.getId());
         return entity;
     }
 
@@ -702,6 +705,7 @@ public class CommentableEntityServiceImpl implements CommentableEntityService {
                             .build()
             );
         }
+        entity.setId(commentableEntity.getId());
         return entity;
     }
 
