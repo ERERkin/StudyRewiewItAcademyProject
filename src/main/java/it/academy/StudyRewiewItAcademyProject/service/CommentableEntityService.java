@@ -17,6 +17,8 @@ public interface CommentableEntityService extends BaseService<CommentableEntity>
 
     List<Department> getAllDepartmentByFaculty(Long id) throws ParseException;
 
+    List<Department> getAllDepartmentByAddedAndColumnsInf(String inf) throws ParseException;
+
     Employee saveEmployee(Employee entity);
 
     Employee getEmployee(Long id) throws ParseException;
@@ -25,11 +27,15 @@ public interface CommentableEntityService extends BaseService<CommentableEntity>
 
     List<Employee> getAllEmployeeByDepartment(Long id) throws ParseException;
 
+    List<Employee> getAllEmployeeByAddedAndColumnsInf(String inf) throws ParseException;
+
     University saveUniversity(University entity);
 
     University getUniversity(Long id) throws ParseException;
 
     List<University> getAllUniversity() throws ParseException;
+
+    List<University> getAllUniversityByAddedAndColumnsInf(String inf) throws ParseException;
 
     Faculty saveFaculty(Faculty entity);
 
@@ -39,6 +45,8 @@ public interface CommentableEntityService extends BaseService<CommentableEntity>
 
     List<Faculty> getAllFacultyByUniversity(Long id) throws ParseException;
 
+    List<Faculty> getAllFacultyByAddedAndColumnsInf(String inf) throws ParseException;
+
     Specialty saveSpecialty(Specialty entity);
 
     Specialty getSpeciality(Long id) throws ParseException;
@@ -46,6 +54,8 @@ public interface CommentableEntityService extends BaseService<CommentableEntity>
     List<Specialty> getAllSpeciality() throws ParseException;
 
     List<Specialty> getAllSpecialityByDepartment(Long id) throws ParseException;
+
+    List<Specialty> getAllSpecialtyByAddedAndColumnsInf(String inf) throws ParseException;
 
     String getType(Long id);
 }

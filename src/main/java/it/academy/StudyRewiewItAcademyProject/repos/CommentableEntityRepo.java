@@ -19,4 +19,7 @@ public interface CommentableEntityRepo extends JpaRepository<CommentableEntity, 
 
     @Query("SELECT count(ce) FROM CommentableEntity ce where ce.id = :id")
     Long findCount(Long id);
+
+    @Query("SELECT ceal.addedColumnEntity FROM CommentableEntityAddedColumn ceal where ceal.columnName = :inf")
+    List<CommentableEntity> findAllByAddedAndColumnsInf(String inf);
 }

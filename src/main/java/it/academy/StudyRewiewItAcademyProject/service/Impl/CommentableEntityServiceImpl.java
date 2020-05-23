@@ -194,6 +194,17 @@ public class CommentableEntityServiceImpl implements CommentableEntityService {
     }
 
     @Override
+    public List<Employee> getAllEmployeeByAddedAndColumnsInf(String inf) throws ParseException {
+        List<Employee> employees = new ArrayList<>();
+        List<CommentableEntity> commentableEntities =
+                commentableEntityRepo.findAllByAddedAndColumnsInf(inf);
+        for(CommentableEntity c : commentableEntities){
+            employees.add(getEmployee(c.getId()));
+        }
+        return employees;
+    }
+
+    @Override
     public Department saveDepartment(Department entity) {
 //        commentableEntityColumnService.save(CommentableEntityColumn.builder()
 //                .info("" + entity.)
@@ -332,6 +343,16 @@ public class CommentableEntityServiceImpl implements CommentableEntityService {
         return departments;
     }
 
+    @Override
+    public List<Department> getAllDepartmentByAddedAndColumnsInf(String inf) throws ParseException {
+        List<Department> departments = new ArrayList<>();
+        List<CommentableEntity> commentableEntities =
+                commentableEntityRepo.findAllByAddedAndColumnsInf(inf);
+        for(CommentableEntity c : commentableEntities){
+            departments.add(getDepartment(c.getId()));
+        }
+        return departments;
+    }
 
     @Override
     public University saveUniversity(University entity) {
@@ -457,6 +478,17 @@ public class CommentableEntityServiceImpl implements CommentableEntityService {
     public List<University> getAllUniversity() throws ParseException {
         List<University> universities = new ArrayList<>();
         List<CommentableEntity> commentableEntities = commentableEntityRepo.findAllByType("University");
+        for(CommentableEntity c : commentableEntities){
+            universities.add(getUniversity(c.getId()));
+        }
+        return universities;
+    }
+
+    @Override
+    public List<University> getAllUniversityByAddedAndColumnsInf(String inf) throws ParseException {
+        List<University> universities = new ArrayList<>();
+        List<CommentableEntity> commentableEntities =
+                commentableEntityRepo.findAllByAddedAndColumnsInf(inf);
         for(CommentableEntity c : commentableEntities){
             universities.add(getUniversity(c.getId()));
         }
@@ -598,6 +630,17 @@ public class CommentableEntityServiceImpl implements CommentableEntityService {
     }
 
     @Override
+    public List<Faculty> getAllFacultyByAddedAndColumnsInf(String inf) throws ParseException {
+        List<Faculty> faculties = new ArrayList<>();
+        List<CommentableEntity> commentableEntities =
+                commentableEntityRepo.findAllByAddedAndColumnsInf(inf);
+        for(CommentableEntity c : commentableEntities){
+            faculties.add(getFaculty(c.getId()));
+        }
+        return faculties;
+    }
+
+    @Override
     public Specialty saveSpecialty(Specialty entity) {
         CommentableEntity commentableEntity;
         List<CommentableEntityColumn> commentableEntityColumns = new ArrayList<>();
@@ -703,6 +746,17 @@ public class CommentableEntityServiceImpl implements CommentableEntityService {
     public List<Specialty> getAllSpecialityByDepartment(Long id) throws ParseException {
         List<Specialty> specialties = new ArrayList<>();
         List<CommentableEntity> commentableEntities = commentableEntityRepo.findAllByColumnEntity(id);
+        for(CommentableEntity c : commentableEntities){
+            specialties.add(getSpeciality(c.getId()));
+        }
+        return specialties;
+    }
+
+    @Override
+    public List<Specialty> getAllSpecialtyByAddedAndColumnsInf(String inf) throws ParseException {
+        List<Specialty> specialties = new ArrayList<>();
+        List<CommentableEntity> commentableEntities =
+                commentableEntityRepo.findAllByAddedAndColumnsInf(inf);
         for(CommentableEntity c : commentableEntities){
             specialties.add(getSpeciality(c.getId()));
         }

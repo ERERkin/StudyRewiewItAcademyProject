@@ -30,6 +30,12 @@ public class CommentableEntityController {
         return commentableEntityService.getAllUniversity();
     }
 
+    @GetMapping("/university/added/{inf}")
+    List<University> getAllByAddedColumnU(@PathVariable String inf) throws ParseException {
+        System.err.println(inf);
+        return commentableEntityService.getAllUniversityByAddedAndColumnsInf(inf);
+    }
+
     @GetMapping("/university/{idUn}")
     SuperCommentModel getById(@PathVariable Long idUn)  {
         SuperCommentModel superCommentModel = null;
@@ -95,6 +101,11 @@ public class CommentableEntityController {
     @GetMapping("/university/{idUn}/faculty")
     List<Faculty> getAll(@PathVariable Long idUn) throws ParseException {
         return commentableEntityService.getAllFacultyByUniversity(idUn);
+    }
+
+    @GetMapping("/faculty/added/{inf}")
+    List<Faculty> getAllByAddedColumnF(@PathVariable String inf) throws ParseException {
+        return commentableEntityService.getAllFacultyByAddedAndColumnsInf(inf);
     }
 
     @GetMapping("/university/{idUn}/faculty/{idFaculty}")
@@ -171,10 +182,16 @@ public class CommentableEntityController {
 //        return commentableEntityService.saveFaculty(faculty);
 //    }
 
+    ///added/{inf}
     @GetMapping("/university/{idUn}/faculty/{idFaculty}/dep")
     List<Department> getAll(@PathVariable Long idUn,
                             @PathVariable Long idFaculty) throws ParseException {
         return commentableEntityService.getAllDepartmentByFaculty(idFaculty);
+    }
+
+    @GetMapping("/dep/added/{inf}")
+    List<Department> getAllByAddedColumnD(@PathVariable String inf) throws ParseException {
+        return commentableEntityService.getAllDepartmentByAddedAndColumnsInf(inf);
     }
 
     @GetMapping("/university/{idUn}/faculty/{idFaculty}/dep/{idDep}")
@@ -254,12 +271,16 @@ public class CommentableEntityController {
 //        }
 //        return commentableEntityService.saveDepartment(department);
 //    }
-
+    ///added/{inf}
     @GetMapping("/university/{idUn}/faculty/{idFaculty}/dep/{idDep}/spec")
     List<Specialty> getAll(@PathVariable Long idUn,
                            @PathVariable Long idFaculty,
                            @PathVariable Long idDep) throws ParseException {
         return commentableEntityService.getAllSpecialityByDepartment(idDep);
+    }
+    @GetMapping("/spec/added/{inf}")
+    List<Specialty> getAllByAddedColumn(@PathVariable String inf) throws ParseException {
+        return commentableEntityService.getAllSpecialtyByAddedAndColumnsInf(inf);
     }
 
     @GetMapping("/university/{idUn}/faculty/{idFaculty}/dep/{idDep}/spec/{idSpec}")
@@ -344,12 +365,17 @@ public class CommentableEntityController {
 //        }
 //        return commentableEntityService.saveSpeciality(specialty);
 //    }
-
+    //ByAddedColumn
     @GetMapping("/university/{idUn}/faculty/{idFaculty}/dep/{idDep}/emp")
     List<Employee> getAllEmp(@PathVariable Long idUn,
                            @PathVariable Long idFaculty,
                            @PathVariable Long idDep) throws ParseException {
         return commentableEntityService.getAllEmployeeByDepartment(idDep);
+    }
+
+    @GetMapping("/emp/added/{inf}")
+    List<Employee> getAllEmpByAddedColumn(@PathVariable String inf) throws ParseException {
+        return commentableEntityService.getAllEmployeeByAddedAndColumnsInf(inf);
     }
 
     @GetMapping("/university/{idUn}/faculty/{idFaculty}/dep/{idDep}/emp/{idEmp}")
