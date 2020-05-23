@@ -5,8 +5,11 @@ import it.academy.StudyRewiewItAcademyProject.enums.RoleEnum;
 import it.academy.StudyRewiewItAcademyProject.repos.RolesRepo;
 import it.academy.StudyRewiewItAcademyProject.service.RolesService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 
+@Service
 public class RolesServiceImpl implements RolesService {
     @Autowired
     RolesRepo rolesRepo;

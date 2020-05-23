@@ -5,10 +5,12 @@ import it.academy.StudyRewiewItAcademyProject.repos.UserRepo;
 import it.academy.StudyRewiewItAcademyProject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Component
+@Service
 public class UserServiceImpl implements UserService {
     @Autowired
     UserRepo userRepo;

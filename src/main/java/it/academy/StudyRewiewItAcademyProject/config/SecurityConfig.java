@@ -19,6 +19,7 @@ import javax.sql.DataSource;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private DataSource dataSource;
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -31,12 +32,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .dataSource(dataSource)
                 .passwordEncoder(passwordEncoder())
                 .usersByUsernameQuery("select login, name, password from st_user where login = ?")
-                .authoritiesByUsernameQuery("select u.login, r.role_name from st_user u inner join roles r on r.user_id = u.id where u.login = ?");
+                .authoritiesByUsernameQuery("select u.login, r.role_name from st_user u inner join roles r on u.id = r.user_id where u.login = ?");
     }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.httpBasic().and().authorizeRequests()
                 .antMatchers("/user/**").hasRole("ADMIN")
+                .antMatchers("/user/**").hasRole("USER")
+                .antMatchers("/user/all").permitAll()
                 .and().httpBasic().and().csrf().disable();
     }
 }

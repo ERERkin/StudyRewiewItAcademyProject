@@ -19,27 +19,29 @@ import java.util.List;
 
 
 @Controller
-@RequestMapping
+@RequestMapping("/register")
 public class RegisterController {
     @Autowired
     private UserRepo userRepo;
+    @Autowired
+    private RolesServiceImpl rolesService;
     @Autowired
     private RolesRepo rolesRepo;
 
     @Autowired
     PasswordEncoder passwordEncoder;
 
-    @PostMapping("/register")
-    ///Postman 404, no v BD sohranyayet
+    @PostMapping("/user")
     public String doRegister(@RequestBody RegisterUser registerUser) {
         String encodedPassword  = passwordEncoder.encode(registerUser.getPassword());
         User user = new User();
         user.setPassword(encodedPassword);
         user.setLogin(registerUser.getLogin());
-        // role_Name is saved as a number not ENUM
         user.setName(registerUser.getName());
-        user.setRole(rolesRepo.findByName("STUDENT"));
+        Roles roles = rolesService.findByName("ROLE_USER");
+        roles.setUser(user);
         userRepo.save(user);
+        rolesService.save(roles);
         return "User " + registerUser.getLogin() + " is successfully registered!";
     }
 

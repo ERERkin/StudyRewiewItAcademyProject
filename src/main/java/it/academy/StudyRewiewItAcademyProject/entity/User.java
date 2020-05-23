@@ -21,14 +21,12 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long id;
 
-    @Column (unique = true, nullable = false)
+    @Column (name = "login", unique = true, nullable = false)
     String login;
-    @Column (unique = false, nullable = false)
+    @Column (name = "name",unique = false, nullable = false)
     String name;
-    @Column (unique = false, nullable = false)
+    @Column (name = "password",unique = false, nullable = false)
     String password;
-    @ManyToOne
-    @JoinColumn(name = "role_id")
-    Roles role;
+
 
 }

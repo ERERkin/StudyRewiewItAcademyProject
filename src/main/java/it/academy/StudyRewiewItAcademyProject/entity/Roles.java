@@ -21,7 +21,9 @@ public class Roles {
     @Column(name = "role_name", unique = true)
     String roleName;
 
-    public Roles(String name) {
-        roleName = name;
-    }
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "user_id")
+    User user;
+
+
 }

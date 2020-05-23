@@ -2,7 +2,6 @@ package it.academy.StudyRewiewItAcademyProject.Bootstrap;
 
 import it.academy.StudyRewiewItAcademyProject.entity.Roles;
 import it.academy.StudyRewiewItAcademyProject.entity.User;
-import it.academy.StudyRewiewItAcademyProject.enums.RoleEnum;
 import it.academy.StudyRewiewItAcademyProject.repos.RolesRepo;
 import it.academy.StudyRewiewItAcademyProject.repos.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,20 +17,33 @@ public class Bootstrap implements CommandLineRunner {
     private UserRepo userRepo;
     @Autowired
     private PasswordEncoder passwordEncoder;
-    @Override
-    public void run(String... args) throws Exception {
-        Roles roleStudent = new Roles(RoleEnum.STUDENT.name());
-        rolesRepo.save(roleStudent);
-        Roles roleAdmin = new Roles("ADMIN");
-        rolesRepo.save(roleAdmin);
-        Roles roleUser = new Roles(RoleEnum.USER.name());
-        rolesRepo.save(roleUser);
 
+    @Override
+    public void run(String... args) {
         User admin = User.builder()
                 .login("admin")
-                .name("ADMIN")
+                .name("XXX")
                 .password(passwordEncoder.encode("123"))
-                .role(roleAdmin).build();
+                .build();
+
         userRepo.save(admin);
+        Roles roleAdmin = Roles.builder()
+                .roleName("ROLE_ADMIN")
+                .user(admin)
+                .build();
+        Roles roleUser = Roles.builder()
+                .roleName("ROLE_USER")
+                .build();
+
+
+        rolesRepo.save(roleAdmin);
+        rolesRepo.save(roleUser);
+//        Roles roleStudent = new Roles(RoleEnum.STUDENT.name());
+//        rolesRepo.save(roleStudent);
+
+//        Roles roleUser = new Roles(RoleEnum.USER.name());
+//        rolesRepo.save(roleUser);
+
+
     }
 }
