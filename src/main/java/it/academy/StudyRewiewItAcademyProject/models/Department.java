@@ -4,6 +4,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.util.Date;
+import java.util.List;
 
 @Builder
 @NoArgsConstructor
@@ -17,4 +18,5 @@ public class Department implements Model{
     Faculty facultyId;
     Employee headOfDepartmentId;
     String createDate;
+    List<AddedColumnModel> addedColumnModels;
 }

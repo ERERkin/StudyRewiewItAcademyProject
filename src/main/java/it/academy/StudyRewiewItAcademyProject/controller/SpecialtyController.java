@@ -1,6 +1,7 @@
 package it.academy.StudyRewiewItAcademyProject.controller;
 
 import it.academy.StudyRewiewItAcademyProject.models.Specialty;
+import it.academy.StudyRewiewItAcademyProject.service.CommentableEntityAddedColumnService;
 import it.academy.StudyRewiewItAcademyProject.service.CommentableEntityService;
 import it.academy.StudyRewiewItAcademyProject.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;

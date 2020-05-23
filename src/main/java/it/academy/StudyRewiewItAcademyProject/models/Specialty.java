@@ -4,6 +4,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import javax.persistence.Id;
+import java.util.List;
 
 @Builder
 @NoArgsConstructor
@@ -16,4 +17,5 @@ public class Specialty implements Model{
     String name;
     Department department;
     Integer contractSum;
+    List<AddedColumnModel> addedColumnModels;
 }

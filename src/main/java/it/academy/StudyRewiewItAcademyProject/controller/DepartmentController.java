@@ -2,6 +2,7 @@ package it.academy.StudyRewiewItAcademyProject.controller;
 
 import it.academy.StudyRewiewItAcademyProject.models.Department;
 import it.academy.StudyRewiewItAcademyProject.models.University;
+import it.academy.StudyRewiewItAcademyProject.service.CommentableEntityAddedColumnService;
 import it.academy.StudyRewiewItAcademyProject.service.CommentableEntityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

@@ -3,6 +3,8 @@ package it.academy.StudyRewiewItAcademyProject.models;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.List;
+
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,4 +17,5 @@ public class Employee implements Model{
     String phoneNumber;
     String mail;
     Department department;
+    List<AddedColumnModel> addedColumnModels;
 }

@@ -19,11 +19,11 @@ public interface CommentableEntityService extends BaseService<CommentableEntity>
 
     Employee saveEmployee(Employee entity);
 
-    Employee getEmployee(Long id);
+    Employee getEmployee(Long id) throws ParseException;
 
-    List<Employee> getAllEmployee();
+    List<Employee> getAllEmployee() throws ParseException;
 
-    List<Employee> getAllEmployeeByDepartment(Long id);
+    List<Employee> getAllEmployeeByDepartment(Long id) throws ParseException;
 
     University saveUniversity(University entity);
 

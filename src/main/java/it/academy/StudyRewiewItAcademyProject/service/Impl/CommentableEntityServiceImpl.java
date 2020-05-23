@@ -5,6 +5,7 @@ import it.academy.StudyRewiewItAcademyProject.entity.CommentableEntityColumn;
 import it.academy.StudyRewiewItAcademyProject.entity.CommentableEntityColumnLink;
 import it.academy.StudyRewiewItAcademyProject.models.*;
 import it.academy.StudyRewiewItAcademyProject.repos.CommentableEntityRepo;
+import it.academy.StudyRewiewItAcademyProject.service.CommentableEntityAddedColumnService;
 import it.academy.StudyRewiewItAcademyProject.service.CommentableEntityColumnLinkService;
 import it.academy.StudyRewiewItAcademyProject.service.CommentableEntityColumnService;
 import it.academy.StudyRewiewItAcademyProject.service.CommentableEntityService;
@@ -26,6 +27,8 @@ public class CommentableEntityServiceImpl implements CommentableEntityService {
     private CommentableEntityColumnService commentableEntityColumnService;
     @Autowired
     private CommentableEntityColumnLinkService commentableEntityColumnLinkService;
+    @Autowired
+    private CommentableEntityAddedColumnService commentableEntityAddedColumnService;
     @Override
     public CommentableEntity getById(Long id) {
         Optional<CommentableEntity> commentableEntity = commentableEntityRepo.findById(id);
@@ -146,7 +149,7 @@ public class CommentableEntityServiceImpl implements CommentableEntityService {
     }
 
     @Override
-    public Employee getEmployee(Long id) {
+    public Employee getEmployee(Long id) throws ParseException {
         CommentableEntity commentableEntity = commentableEntityRepo.findById(id).get();
         List<CommentableEntityColumn> commentableEntityColumns = commentableEntity.getColumns();
         //List<CommentableEntityColumnLink> commentableEntityColumnLinks = commentableEntity.getLinkColumns();
@@ -158,17 +161,20 @@ public class CommentableEntityServiceImpl implements CommentableEntityService {
             else if(c.getInfoType().equals("Phone"))
                 phone = c.getInfo();
         }
+        List<AddedColumnModel> addedColumnModels =
+                commentableEntityAddedColumnService.getAllByModel(id);
         Employee employee = Employee.builder()
                 .id(id)
                 .mail(mail)
                 .name(commentableEntity.getName())
                 .phoneNumber(phone)
+                .addedColumnModels(addedColumnModels)
                 .build();
         return employee;
     }
 
     @Override
-    public List<Employee> getAllEmployee() {
+    public List<Employee> getAllEmployee() throws ParseException {
         List<Employee> employees = new ArrayList<>();
         List<CommentableEntity> commentableEntities = commentableEntityRepo.findAllByType("Employee");
         for(CommentableEntity c : commentableEntities){
@@ -178,7 +184,7 @@ public class CommentableEntityServiceImpl implements CommentableEntityService {
     }
 
     @Override
-    public List<Employee> getAllEmployeeByDepartment(Long id) {
+    public List<Employee> getAllEmployeeByDepartment(Long id) throws ParseException {
         List<Employee> employees = new ArrayList<>();
         List<CommentableEntity> commentableEntities = commentableEntityRepo.findAllByColumnEntity(id);
         for(CommentableEntity c : commentableEntities){
@@ -293,12 +299,15 @@ public class CommentableEntityServiceImpl implements CommentableEntityService {
             else if(c.getColumnName().equals("Employee"))
                 headOfDep = getEmployee(c.getColumnEntity().getId());
         }
+        List<AddedColumnModel> addedColumnModels =
+                commentableEntityAddedColumnService.getAllByModel(id);
         Department department = Department.builder()
                 .id(commentableEntity.getId())
                 .name(commentableEntity.getName())
                 .headOfDepartmentId(headOfDep)
                 .facultyId(faculty)
                 .createDate(date)
+                .addedColumnModels(addedColumnModels)
                 .build();
         return department;
     }
@@ -431,12 +440,15 @@ public class CommentableEntityServiceImpl implements CommentableEntityService {
             if(c.getColumnName().equals("Employee"))
                 rector = getEmployee(c.getColumnEntity().getId());
         }
+        List<AddedColumnModel> addedColumnModels =
+                commentableEntityAddedColumnService.getAllByModel(id);
         University university = University.builder()
                 .id(id)
                 .address(address)
                 .createDate(date)
                 .name(commentableEntity.getName())
                 .rector(rector)
+                .addedColumnModels(addedColumnModels)
                 .build();
         return university;
     }
@@ -552,12 +564,15 @@ public class CommentableEntityServiceImpl implements CommentableEntityService {
                 university = getUniversity(c.getColumnEntity().getId());
             }
         }
+        List<AddedColumnModel> addedColumnModels =
+                commentableEntityAddedColumnService.getAllByModel(id);
         Faculty faculty = Faculty.builder()
                 .createDate(date)
                 .id(id)
                 .facultyDean(facultyDean)
                 .name(commentableEntity.getName())
                 .university(university)
+                .addedColumnModels(addedColumnModels)
                 .build();
         return faculty;
     }
@@ -662,11 +677,14 @@ public class CommentableEntityServiceImpl implements CommentableEntityService {
             if(c.getColumnName().equals("Department"))
                 department = getDepartment(c.getColumnEntity().getId());
         }
+        List<AddedColumnModel> addedColumnModels =
+                commentableEntityAddedColumnService.getAllByModel(id);
         Specialty specialty = Specialty.builder()
                 .id(id)
                 .name(commentableEntity.getName())
                 .contractSum(sum)
                 .department(department)
+                .addedColumnModels(addedColumnModels)
                 .build();
         return specialty;
     }

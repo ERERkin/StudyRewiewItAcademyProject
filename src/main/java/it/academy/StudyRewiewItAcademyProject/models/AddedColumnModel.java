@@ -3,8 +3,9 @@ package it.academy.StudyRewiewItAcademyProject.models;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.util.Date;
-import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Builder
 @NoArgsConstructor
@@ -12,11 +13,9 @@ import java.util.List;
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Faculty implements Model{
+public class AddedColumnModel {
     Long id;
-    String name;
-    University university;
-    String createDate;
-    Employee facultyDean;
-    List<AddedColumnModel> addedColumnModels;
+    String columnName;
+    String inf;
+    Long modelId;
 }

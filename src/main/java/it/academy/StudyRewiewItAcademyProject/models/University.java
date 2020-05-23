@@ -18,4 +18,5 @@ public class University implements Model{
     String address;
     Employee rector;
     String createDate;
+    List<AddedColumnModel> addedColumnModels;
 }
